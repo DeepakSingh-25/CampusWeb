@@ -1,0 +1,11 @@
+<form class="gst-card profile" (ngSubmit)="saveProfile()">
+  @for(f of fields;track f){
+    <label [class.profile-address]="f==='Registered Address'">{{f}}
+      <input class="form-control" [name]="f" [(ngModel)]="profile[f]" (ngModelChange)="saved=false" required>
+    </label>
+  }
+  <footer class="profile-actions">
+    @if(saved){<span role="status">Saved on this device</span>}
+    <button type="submit" class="btn btn-primary">Save changes</button>
+  </footer>
+</form>

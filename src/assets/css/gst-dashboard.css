@@ -1,0 +1,342 @@
+/* GST dashboard shared styles. Built on theme variables so light/dark mode works. */
+
+.gst-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 0.25rem 1.875rem rgba(46, 45, 116, 0.05);
+  padding: 0.875rem 1rem;
+  height: 100%;
+  color: var(--text-secondary-light);
+}
+
+.gst-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.gst-card-title {
+  font-size: 0.9375rem !important;
+  font-weight: 600;
+  color: var(--text-primary-light);
+  margin: 0;
+}
+
+.gst-card-title small {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--neutral-500);
+}
+
+.gst-view-all {
+  font-size: 0.6875rem;
+  color: var(--primary-600);
+  background: var(--primary-50);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.gst-icon-box {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9375rem;
+}
+
+.gst-icon-box.solid {
+  color: #fff !important;
+}
+
+/* Tones */
+.gst-tone-primary { background: var(--primary-50); color: var(--primary-600); }
+.gst-tone-success { background: var(--success-50); color: var(--success-600); }
+.gst-tone-purple  { background: var(--lilac-100);  color: var(--lilac-600); }
+.gst-tone-warning { background: var(--warning-50); color: var(--warning-600); }
+.gst-tone-cyan    { background: var(--cyan-50);    color: var(--cyan-700); }
+.gst-tone-danger  { background: var(--danger-50);  color: var(--danger-600); }
+
+.gst-icon-box.solid.gst-tone-primary { background: var(--primary-600); }
+.gst-icon-box.solid.gst-tone-success { background: var(--success-600); }
+.gst-icon-box.solid.gst-tone-purple  { background: var(--lilac-600); }
+.gst-icon-box.solid.gst-tone-warning { background: var(--warning-600); }
+.gst-icon-box.solid.gst-tone-cyan    { background: var(--cyan-600); }
+
+[data-theme=dark] .gst-tone-cyan { background: rgba(0, 184, 242, 0.12); }
+
+.gst-muted {
+  font-size: 0.6875rem;
+  color: var(--neutral-500);
+}
+
+/* Status pills */
+.gst-pill {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.gst-pill-paid    { background: var(--success-100); color: var(--success-700); }
+.gst-pill-unpaid  { background: var(--danger-100);  color: var(--danger-600); }
+.gst-pill-partial { background: var(--warning-100); color: var(--warning-800); }
+
+[data-theme=dark] .gst-pill-paid    { color: var(--success-400); }
+[data-theme=dark] .gst-pill-unpaid  { color: var(--danger-400); }
+[data-theme=dark] .gst-pill-partial { background: rgba(255, 159, 41, 0.15); color: var(--warning-600); }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   KPI tiles (stat-tile)
+   One shared definition for every module. The wave background, border and
+   radius still come from the theme classes (bgimg-* in hrms.css); this block
+   only adds the layout and the colour system, so each tile is tinted end to
+   end: title, value, note and icon all pick up the tile's own tone.
+   Usage: <div class="stat-tile bgimg-green tone-green"> ... </div>
+   ────────────────────────────────────────────────────────────────────────── */
+.stat-tile {
+  /* Wave lines sit in the lower part of the theme image; show that part on short tiles */
+  background-position: center 85% !important;
+  position: relative;
+  height: 100%;
+  padding: 0.875rem 1rem 0.875rem 1.125rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+/* Tone accent down the leading edge */
+.stat-tile::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  width: 4px;
+  background: var(--tone);
+  opacity: 0.9;
+}
+
+.stat-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--tone-shadow, rgba(15, 23, 42, 0.1));
+}
+
+/* Tones: --tone drives the icon and accent, --tone-deep the value text,
+   --tone-bg the icon chip, --tone-shadow the hover glow. */
+.tone-blue {
+  --tone: #0D99FF; --tone-deep: #0B74C4; --tone-bg: rgba(13, 153, 255, 0.14);
+  --tone-shadow: rgba(13, 153, 255, 0.22);
+}
+.tone-green {
+  --tone: #029D4A; --tone-deep: #027A3A; --tone-bg: rgba(2, 157, 74, 0.14);
+  --tone-shadow: rgba(2, 157, 74, 0.22);
+}
+.tone-orange {
+  --tone: #E58209; --tone-deep: #B96806; --tone-bg: rgba(252, 176, 64, 0.2);
+  --tone-shadow: rgba(229, 130, 9, 0.22);
+}
+.tone-red {
+  --tone: #EA4335; --tone-deep: #BE2F23; --tone-bg: rgba(234, 67, 53, 0.14);
+  --tone-shadow: rgba(234, 67, 53, 0.22);
+}
+.tone-pink,
+.tone-plum {
+  --tone: #AE4B85; --tone-deep: #8C3A6A; --tone-bg: rgba(174, 75, 133, 0.14);
+  --tone-shadow: rgba(174, 75, 133, 0.22);
+}
+.tone-violet {
+  --tone: #8252E9; --tone-deep: #6637C9; --tone-bg: rgba(130, 82, 233, 0.14);
+  --tone-shadow: rgba(130, 82, 233, 0.22);
+}
+.tone-cyan {
+  --tone: #00B8F2; --tone-deep: #0090BE; --tone-bg: rgba(0, 184, 242, 0.14);
+  --tone-shadow: rgba(0, 184, 242, 0.22);
+}
+
+.stat-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  color: var(--tone);
+}
+
+.stat-icon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: #fff;
+  background: var(--tone);
+  box-shadow: 0 2px 6px var(--tone-shadow);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.25rem 0 0.25rem;
+  color: var(--tone-deep);
+  word-break: break-word;
+}
+
+.stat-note {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--tone);
+  opacity: 0.78;
+}
+
+/* Dark mode: the wave image is darker, so the deep shade is replaced by the
+   base tone and the tinted text is lifted a little. */
+[data-theme=dark] .stat-value { color: var(--tone); }
+[data-theme=dark] .stat-title,
+[data-theme=dark] .stat-note { opacity: 0.9; }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   List table design
+   The old look relied on a border drawn on the row, which the separated-borders
+   model ignores and an opaque cell background hides, so the row lines appeared in
+   some columns only and the table looked torn. There is also no outer frame now:
+   nothing sits on the scroll container's edge, so nothing can be clipped or vanish
+   on a fractional pixel at browser zoom.
+
+   Every line is drawn on the cell itself: a divider under each row and one between
+   the columns, with the outer frame on the scroll container. Shared by every module.
+   ────────────────────────────────────────────────────────────────────────── */
+/* One line colour for every table line, so dark mode gets a line that is actually
+   visible instead of the theme's near-black rgba(0, 0, 0, 0.07). */
+:root {
+  --gst-table-line: #dee2e6;
+  --gst-table-head-line: var(--neutral-300, #d1d5db);
+}
+
+[data-theme=dark] {
+  --gst-table-line: rgba(255, 255, 255, 0.14);
+  --gst-table-head-line: rgba(255, 255, 255, 0.22);
+}
+
+/* Bootstrap paints every cell with --bs-table-color, which resolves to pure white
+   in dark mode and glares. Set on the cell, where Bootstrap sets it, so this wins
+   over the variable whatever it holds. */
+[data-theme=dark] .table > :not(caption) > * > * {
+  color: #DDDDDD;
+}
+
+/* The theme paints the header row white from a nested rule, so this one is forced */
+[data-theme=dark] .table-responsive > .table.table-bordered > thead > tr > * {
+  color: #DDDDDD !important;
+}
+
+/* Bootstrap draws the select chevron as a background SVG with a near-black stroke,
+   which disappears on the dark surfaces. Same arrow, light stroke. */
+[data-theme=dark] .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23D1D5DB' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.table-responsive > .table.table-bordered {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+  margin-bottom: 0;
+}
+
+.table-responsive > .table.table-bordered > :not(caption) > * { border-width: 0; }
+
+/* The row divider is the one the theme overrides, so it is forced too */
+.table-responsive > .table.table-bordered > :not(caption) > * > * {
+  border: 0;
+  border-bottom: 1px solid var(--gst-table-line) !important;
+  border-right: 1px solid var(--gst-table-line);
+}
+
+/* The container draws the right edge, so the last column needs no line of its own */
+.table-responsive > .table.table-bordered > :not(caption) > * > *:last-child {
+  border-right: 0;
+}
+
+/* Bootstrap paints a cell background over the row line in dark mode */
+[data-theme=dark] .table-responsive > .table.table-bordered > tbody > tr > * {
+  background-color: transparent;
+}
+
+/* Header sits on a tinted band with a slightly stronger divider under it */
+.table-responsive > .table.table-bordered > thead > tr > * {
+  background-color: var(--neutral-50, #f8f9fa);
+  border-bottom: 1px solid var(--gst-table-head-line) !important;
+}
+
+/* The container's own frame closes the table off, so the last row needs no line.
+   Forced because the row divider above it is forced too. */
+.table-responsive > .table.table-bordered > tbody:last-child > tr:last-child > * {
+  border-bottom: 0 !important;
+}
+
+.table-responsive > .table.table-bordered > tbody > tr:hover > * {
+  background-color: rgba(15, 23, 42, 0.02);
+}
+
+[data-theme=dark] .table-responsive > .table.table-bordered > thead > tr > * {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme=dark] .table-responsive > .table.table-bordered > tbody > tr:hover > * {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+
+/* Outer frame: drawn on the scroll container, never on the table itself. The container's
+   border is not clipped by its own overflow, while a border on the table sits on that
+   clipping edge and disappears on one side at some widths and browser zoom levels. */
+.table-responsive:has(> .table.table-bordered) {
+  border: 1px solid var(--gst-table-line);
+  border-radius: 10px;
+}
+
+/* Header corners follow the frame */
+.table-responsive:has(> .table.table-bordered) > .table > thead > tr:first-child > *:first-child { border-top-left-radius: 9px; }
+.table-responsive:has(> .table.table-bordered) > .table > thead > tr:first-child > *:last-child { border-top-right-radius: 9px; }
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Setup layout (/settings/*)
+   It reuses app-sidebar, so the width comes from the theme's .sidebar rules.
+   The setup menu is a short flat list, so it runs a little narrower than the
+   app's — the width and the main area's offset have to move together.
+
+   :not(.active) matters: the theme's collapsed rail is .sidebar.active, which has
+   the same specificity as these, and this file loads later — without it the rail
+   would keep the expanded width and sit over the page.
+   ────────────────────────────────────────────────────────────────────────── */
+.setup-shell .sidebar:not(.active) {
+  width: 14.0625rem;
+}
+
+@media (min-width: 1200px) {
+  .setup-shell .sidebar:not(.active) { width: 12.5rem; }
+  .setup-shell .dashboard-main:not(.active) { margin-inline-start: 12.5rem; }
+  .setup-shell .sidebar.active:hover { width: 12.5rem; }
+}
+
+@media (min-width: 1400px) {
+  .setup-shell .sidebar:not(.active) { width: 15rem; }
+  .setup-shell .dashboard-main:not(.active) { margin-inline-start: 15rem; }
+  .setup-shell .sidebar.active:hover { width: 15rem; }
+}
+
+@media (min-width: 1650px) {
+  .setup-shell .sidebar:not(.active) { width: 16.5rem; }
+  .setup-shell .dashboard-main:not(.active) { margin-inline-start: 16.5rem; }
+  .setup-shell .sidebar.active:hover { width: 16.5rem; }
+}

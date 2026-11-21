@@ -1,0 +1,54 @@
+.widgets article {
+  container-type: inline-size;
+  min-width: 0;
+}
+.chart-layout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+.chart-summary {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: var(--text-secondary-light);
+  font-size: 12px;
+}
+.chart-ring {
+  display: grid;
+  place-items: center;
+  width: clamp(84px, 22cqi, 112px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.chart-ring strong {
+  display: grid;
+  place-items: center;
+  width: 72%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--text-primary-light);
+  font-size: 22px;
+  line-height: 1;
+}
+.chart-key {
+  flex: 0 0 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.chart-layout .metric span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@container (max-width: 350px) {
+  .chart-layout { grid-template-columns: 1fr; gap: 0; }
+  .chart-summary { display: flex; gap: 12px; align-items: center; }
+}
+@media (max-width: 560px) {
+  .stat { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; }
+}
+@media (max-width: 380px) {
+  .stat { grid-template-columns: 1fr; }
+}

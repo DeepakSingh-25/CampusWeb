@@ -1,0 +1,7 @@
+<div class="stats">@for(k of stats;track k[1]){<a [href]="moduleLink(k[5])" class="gst-card stat"><span class="gst-icon-box" [class]="'gst-tone-'+k[4]"><i [class]="'fa-solid fa-'+k[3]"></i></span><span><strong>{{k[0]}}</strong><small>{{k[1]}}</small></span><em>{{k[2]}}</em></a>}</div>
+<div class="widgets">@for(w of widgets;track w.title;let idx=$index){<article class="gst-card"><div class="gst-card-head"><h2 class="gst-card-title">{{w.title}}</h2><a class="gst-view-all" [href]="moduleLink(w.target)">Open</a></div>
+@if(idx===1){<div class="ministats"><b>17 <small>Outside</small></b><b>7 <small>No permit</small></b><b>3 <small>Overdue</small></b><b>2 <small>Returned</small></b></div>}
+<div [class.chart-layout]="w.chart">
+@if(w.chart; as chart){<div class="chart-summary"><div class="chart-ring" [style.background]="chart.fill"><strong>{{chart.total}}</strong></div><span>{{chart.caption}}</span></div>}
+<div class="legend">@for(label of w.labels;track label;let i=$index){<div class="metric">@if(w.chart; as chart){<i class="chart-key" aria-hidden="true" [style.background]="chart.colors[i]"></i>}<span>{{label}}</span>@if(idx>2){<div class="track"><i [style.width.%]="100*w.values[i]/(idx===3?100:w.values[0])" [style.background]="w.color"></i></div>}<b>{{idx===1?['10:45','14:03','14:01','15:41'][i]:w.values[i]}}{{idx===3?'%':''}}</b></div>}</div></div></article>}</div>
+

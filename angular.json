@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "cli": {
+    "analytics": false
+  },
+  "projects": {
+    "campustrack": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/campustrack",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [{"glob":"user[1-5].png","input":"src/assets/images/users","output":"assets/id-photos"}],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/styles/theme.css",
+              "src/assets/css/a-font/stylesheet.css",
+              "src/assets/css/style.css",
+              "src/assets/css/icon.css",
+              "src/assets/css/hrms.css",
+              "src/assets/css/legacy-shared.css",
+              "src/assets/css/gst-dashboard.css",
+              "src/styles/sidebar.css",
+              "src/styles/campus.css"
+            ],
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": false
+              },
+              "fonts": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "campustrack:build"
+          }
+        }
+      }
+    }
+  }
+}

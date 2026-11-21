@@ -1,0 +1,12 @@
+<nav class="catalog-tabs" aria-label="Directory setup categories">
+@for(t of tabs;track t.title){<button type="button" [attr.aria-pressed]="tab===t" (click)="select(t)"><i class="fa-solid fa-{{t.icon}}"></i>{{t.title}} <b>{{t.names.length}}</b></button>}
+</nav>
+<header class="catalog-heading"><div><h2>{{tab.title}}</h2><p>{{tab.description}}</p></div>
+@if(tab.academic && !academicEditor){<a [href]="'#/attendance/setup/'+(tab===tabs[0]?'programmes':'classes-sections')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Manage in Attendance → Setup</a>}</header>
+<div class="catalog-toolbar"><div class="statuses" role="group" aria-label="Status">@for(s of statuses;track s){<button type="button" [attr.aria-pressed]="status===s" (click)="status=s">{{s}} <b>{{count(s)}}</b></button>}</div>
+<label class="catalog-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" [attr.aria-label]="'Search '+tab.title" [placeholder]="'Search '+tab.title.toLowerCase()+'…'" [(ngModel)]="query"></label></div>
+<div class="catalog-table"><table><thead><tr><th>Code</th><th>{{tab.column}}</th><th>Status</th><th aria-label="Actions"></th></tr></thead>
+<tbody>@for(e of rows;track e.id){<tr><td class="code">—</td><td><strong>{{e.name}}</strong> <span class="standard">Standard</span></td><td><span class="state" [class.inactive]="!e.active">{{e.active?'Active':'Inactive'}}</span></td><td>
+@if(editable){<button class="edit-status" (click)="toggle(e)" [attr.aria-label]="(e.active?'Deactivate ':'Activate ')+e.name">{{e.active?'Deactivate':'Activate'}}</button>}@else{<i class="fa-solid fa-lock" title="Managed in Attendance Setup" aria-label="Read-only"></i>}</td></tr>}
+@empty{<tr><td colspan="4" class="empty">No matching records.</td></tr>}</tbody></table></div>
+@if(!academicEditor){<details class="preferences"><summary>Directory preferences</summary><campus-module-screen moduleName="User Directory" section="Setup" icon="fa-solid fa-address-book"></campus-module-screen></details>}

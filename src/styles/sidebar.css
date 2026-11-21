@@ -1,0 +1,159 @@
+/* Sidebar layout, flyout menu and hover colors come from the theme (assets/css/style.css). */
+
+.gst-logo {
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.gst-logo-badge {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: #0D99FF;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gst-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.gst-logo-text strong {
+  font-size: 1.05rem;
+  color: var(--text-primary-light);
+}
+
+.gst-logo-text small {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+.gst-menu-icon {
+  width: 1.375rem;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.gst-sub-icon {
+  width: 1.2rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.sidebar-menu li a {
+  cursor: pointer;
+}
+
+/* Module colors, same as the old theme's hover colors (style.css).
+   --mod-color = icon/text color, --mod-bg = light rgba of the same color. */
+.gst-mod-dashboard  { --mod-color: #0D99FF; --mod-bg: rgba(13, 153, 255, 0.08); }
+.gst-mod-sales      { --mod-color: #6366F1; --mod-bg: rgba(99, 102, 241, 0.1); }
+.gst-mod-nms        { --mod-color: #EA4335; --mod-bg: rgba(234, 67, 53, 0.08); }
+.gst-mod-project    { --mod-color: #FCB040; --mod-bg: rgba(252, 176, 64, 0.1); }
+.gst-mod-hrms       { --mod-color: #AE4B85; --mod-bg: rgba(174, 75, 133, 0.08); }
+.gst-mod-reports    { --mod-color: #029D4A; --mod-bg: rgba(2, 157, 74, 0.08); }
+.gst-mod-selfdesk   { --mod-color: #7567AC; --mod-bg: rgba(117, 103, 172, 0.1); }
+
+/* Icons are always in their module color, even when the link is not hovered */
+.sidebar .sidebar-menu li .gst-menu-icon,
+.sidebar .sidebar-menu li .gst-sub-icon {
+  color: var(--mod-color) !important;
+}
+
+/* Dashboard always stays blue (theme default for a.dashboard.active-page is red) */
+.sidebar .sidebar-menu li > a.dashboard.active-page,
+.sidebar .sidebar-menu li > a.dashboard:hover {
+  color: #0D99FF !important;
+  background: rgba(13, 153, 255, 0.08) !important;
+}
+
+/* Hover, active page, or open flyout: icon + text + arrow take the module color on a light background */
+.sidebar-menu li > a:hover,
+.sidebar-menu li > a.active-page,
+.sidebar-menu li.dropend:hover > a,
+.sidebar-menu li.gst-flyout-open > a {
+  color: var(--mod-color) !important;
+  background: var(--mod-bg) !important;
+}
+
+.sidebar-menu li.dropend:hover > a .icon-right-arrow::before,
+.sidebar-menu li.gst-flyout-open > a .icon-right-arrow::before {
+  color: var(--mod-color) !important;
+}
+
+.dropdown-menu h3 {
+  font-size: 1.125rem !important;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--mod-color) !important;
+}
+
+/* Close the hover flyout right after a link inside it is clicked */
+.sidebar.gst-hide-hover .dropend:hover .dropdown-menu:not(.d-block) {
+  display: none !important;
+}
+
+/* Current page inside a flyout */
+.sidebar .dropdown-menu li a.recruitment-link.gst-sub-active {
+  color: var(--mod-color) !important;
+  background: var(--mod-bg) !important;
+}
+
+/* Flyout sub-items follow the same module color */
+.recruitment-link {
+  color: var(--text-primary-light);
+}
+
+.sidebar .dropdown-menu li a.recruitment-link:hover {
+  color: var(--mod-color) !important;
+  background: var(--mod-bg) !important;
+}
+
+.sidebar .dropdown-menu li a.recruitment-link:hover i {
+  color: var(--mod-color) !important;
+}
+
+/* Slightly stronger tint in dark mode so it stays visible */
+:host-context([data-theme="dark"]) .sidebar-menu li > a:hover,
+:host-context([data-theme="dark"]) .sidebar-menu li > a.active-page,
+:host-context([data-theme="dark"]) .sidebar-menu li.dropend:hover > a,
+:host-context([data-theme="dark"]) .sidebar-menu li.gst-flyout-open > a,
+:host-context([data-theme="dark"]) .sidebar .dropdown-menu li a.recruitment-link:hover {
+  background: color-mix(in srgb, var(--mod-color) 16%, transparent) !important;
+}
+
+/* Icon-only state when the sidebar is collapsed */
+.sidebar.active:not(:hover) .gst-logo-text {
+  display: none;
+}
+
+.sidebar.active:not(:hover) .sidebar-logo {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.sidebar.active:not(:hover) .sidebar-menu li > a {
+  justify-content: center !important;
+  gap: 0 !important;
+  padding-inline: 0 !important;
+}
+
+.sidebar.active:not(:hover) .sidebar-menu li > a > div {
+  gap: 0 !important;
+}
+
+/* Theme adds a 16px right margin to icons when collapsed; that pushes them off-centre */
+.sidebar.active:not(:hover) .sidebar-menu li a i.gst-menu-icon {
+  margin-inline-end: 0 !important;
+}
+
+.sidebar.active:not(:hover) .gst-arrow {
+  display: none;
+}

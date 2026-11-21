@@ -1,0 +1,31 @@
+.bg-img{background-image: url(../images/Log-in/login-left-bg.webp); background-repeat: no-repeat; background-position: center center; background-size: cover;}
+.h100-vh{height: 100vh;}
+.owl-carousel .owl-item img{width: 80%;}
+#login .form-label{font-weight: 500; font-size: 16px; color: #000;}
+/* #login .form-control:focus{border: none;} */
+#login .form-control{border: 1px solid rgba(0, 0, 0, 0.3);border-radius: 4px;box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.07);background: #ffffff !important; color: #000 !important;}
+#login form .text-black{color: #000 !important;}
+#login h3{color: #040404;}
+#login .owl-nav button span { display: none; font-size: 32px; color: #0D99FF; }
+#login .owl-prev{background-color: #fff !important;}
+#login .owl-next{background-color: #fff !important;}
+#login .owl-nav .owl-prev { position: absolute; top: 50%; left: 50px; transform: inherit;}
+#login .owl-nav .owl-next { position: absolute; top: 50%; right: 50px; transform: inherit;}
+#login .store-img{width: 180px;}
+#login #login-password{border-radius: 4px 0px 0px 4px;border-right: none;}
+#login .pass-icon{  border-radius: 0px 4px 4px 0px;  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.07);  border: 1px solid rgba(0, 0, 0, 0.3);  border-left: none;  background: #ffffff !important;  color: #000 !important;}
+#login .owl-theme .owl-dots .owl-dot.active span{background-color: #fff;}
+/* #login .input-group-text{border: none; background-color: #fff;} */
+.owl-item{display: flex;justify-content: center;}
+.bg-img-right{background-image: url(../images/Log-in/login-right.webp); background-repeat: no-repeat; background-position: center center; background-size: cover;}
+.text-gray{color: #5C5C5C;}
+#login-email:focus , #login-password:focus{background-color: white !important;}
+
+
+@media only screen and (max-width: 1197px) {#login .store-img{width: 150px;}}
+@media only screen and (max-width: 1037px) {#login .store-img{width: 145px;}}
+@media only screen and (max-width: 575px) {
+    #login .owl-nav .owl-prev {left: 25px; }
+    #login .owl-nav .owl-next {right: 25px; }
+    .w-75{width: 100% !important;}
+}

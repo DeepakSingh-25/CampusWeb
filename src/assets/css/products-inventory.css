@@ -1,0 +1,80 @@
+/* Products & Inventory module.
+   Same old theme list markup as Sales & Invoices / Purchases & Expenses (box, customdatatable,
+   searchdivmain, tablefooterdiv, app-pagination) and the same "Create New" offcanvas.
+   Only the module colour changes: inventory amber #fcb040 (matches .project in the sidebar). */
+
+/* ── Module buttons (old .btn-darkpink / .btn-darkpink-outline pattern) ── */
+.btn-amber { background-color: #fcb040; color: #fff; border: 1px solid #fcb040; }
+.btn-amber:hover { background-color: inherit; color: #E58209; border: 1px solid #fcb040; }
+.btn-amber:hover svg path { fill: #E58209; }
+.btn-amber-outline { border: 1px solid #fcb040; color: #E58209; }
+.btn-amber-outline:hover { background-color: #fcb040; color: #fff; border: 1px solid #fcb040; }
+
+/* ── List pages ── */
+.inventory-page .form-check-input { border: 1.5px solid #adb5bd; cursor: pointer; }
+.inventory-page .form-check-input:checked { background-color: #fcb040; border-color: #fcb040; }
+.inventory-page .active > .page-link { background: #fcb040 !important; border: 1px solid #fcb040 !important; color: #fff !important; }
+.inventory-page .page-link { cursor: pointer; }
+.inventory-page .page-link:hover { color: #E58209 !important; }
+.inventory-page .doc-no { color: #E58209; font-weight: 600; }
+.inventory-page .icon-data-genrate { cursor: pointer; display: inline-block; transition: transform 0.4s; }
+.inventory-page .icon-data-genrate.rotated { transform: rotate(360deg); }
+.inventory-page .btn-light-danger:disabled { opacity: 0.5; }
+.inventory-page .status-select { width: auto; }
+
+/* Category / cess tag */
+.inventory-page .cat-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(252, 176, 64, 0.14);
+  color: #E58209;
+  white-space: nowrap;
+}
+
+/* -- Summary tiles --
+   The KPI tile system (wave background tones, colourful title / value / note)
+   lives in assets/css/gst-dashboard.css and is shared by every module. */
+
+/* ── Current Stock / Stock Movements switch ── */
+.inventory-page .inv-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.inventory-page .inv-tab {
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-600);
+  transition: background 0.2s, color 0.2s;
+}
+
+.inventory-page .inv-tab:hover { color: #E58209; }
+.inventory-page .inv-tab.active { background: #fcb040; color: #fff; }
+
+/* ── Create offcanvas (coloured title + tinted header, footer with Save / Reset) ── */
+#createProduct.offcanvas { --bs-offcanvas-width: min(820px, 100vw) !important; }
+#stockEntry.offcanvas { --bs-offcanvas-width: min(680px, 100vw) !important; }
+#createProduct .offcanvas-header,
+#stockEntry .offcanvas-header { padding: 20px 30px; background: rgba(252, 176, 64, 0.08) !important; }
+#createProduct .offcanvas-header h4.offcanvas-title,
+#stockEntry .offcanvas-header h4.offcanvas-title { font-size: 24px !important; padding: 0 !important; color: #E58209 !important; }
+#createProduct .offcanvas-body,
+#stockEntry .offcanvas-body { padding: 20px 30px; }
+#createProduct .form-select,
+#stockEntry .form-select { color: var(--text-primary-light) !important; }
+#createProduct .form-check-input:checked,
+#stockEntry .form-check-input:checked { background-color: #fcb040; border-color: #fcb040; }
+#createProduct .totals-table td,
+#stockEntry .totals-table td { border: 0 !important; padding: 4px 8px !important; }
+#createProduct .totals-table tr.grand td,
+#stockEntry .totals-table tr.grand td { border-top: 1px solid var(--border-color) !important; color: #E58209; font-weight: 700; }

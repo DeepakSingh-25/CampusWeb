@@ -1,0 +1,13 @@
+<div class="tools">
+<nav aria-label="Calendar views">@for(v of views;track v;let i=$index){<a [href]="url(v)" [attr.aria-current]="view===v?'page':null"><i class="fa-solid" [class]="'fa-'+['calendar-day','calendar','gear'][i]"></i>{{v}}</a>}</nav>
+@if(view==='Monthly view'){
+<div class="groups" role="group" aria-label="Calendar audience">@for(g of groups;track g;let i=$index){<button [attr.aria-pressed]="g===group" (click)="group=g"><i class="fa-solid" [class]="'fa-'+icons[i]"></i>{{g}}</button>}</div>
+<div class="legend"><span>Applied</span><span>Approved</span><span>Holiday</span></div>}
+</div>
+@if(view==='Holiday Setup'){
+  <campus-leave-holiday-setup></campus-leave-holiday-setup>
+} @else if(view==='Yearly view'){
+  <campus-yearly-view [calendar]="this"></campus-yearly-view>
+} @else {
+  <campus-monthly-view [calendar]="this"></campus-monthly-view>
+}

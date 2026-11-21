@@ -1,0 +1,30 @@
+:host{display:block;min-width:0;font-size:13px}.requests,dialog{border:1px solid var(--border-color);border-radius:14px;background:var(--white);color:inherit;overflow:hidden}header,.groups,.person{display:flex;align-items:center;gap:8px}header{justify-content:space-between;flex-wrap:wrap;padding:14px}.groups{flex-wrap:wrap}.groups{gap:2px;background:var(--neutral-50,var(--white));border:1px solid var(--border-color);padding:3px;border-radius:10px}.groups button{border:0;padding:8px 10px;border-radius:7px;background:transparent;color:inherit;font-weight:600;font-size:12px}.groups button[aria-pressed=true]{background:var(--white);color:var(--campus-gold-text);box-shadow:0 1px 4px #19223922}.groups button:first-child b{background:#305fc1;border-radius:12px;color:white;padding:2px 5px;font-size:10px}.table-scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:820px;text-align:left}.requests .table-scroll thead th{background:#996e09;color:#fff}th{text-transform:uppercase;font-size:10px;padding:11px}td{height:59px;border-bottom:1px solid var(--border-color);padding:6px 11px}.person,.more{padding:0;border:0;background:transparent;color:inherit;text-align:left}.initial{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--tone);color:white;font-weight:700}small,.arrow{color:var(--text-secondary-light)}small{display:block;font-size:11px}tr{--tone:#098783}tr[data-type="1"]{--tone:#7444bf}tr[data-type="2"]{--tone:#3265bd}tr[data-type="3"]{--tone:#bd3555}.type,.status{display:inline-block;padding:4px 8px;white-space:nowrap;border-radius:6px;font-size:11px;font-weight:600;color:var(--tone);border:1px solid color-mix(in srgb,var(--tone) 40%,transparent);background:color-mix(in srgb,var(--tone) 9%,var(--white))}.status{border-radius:20px;text-transform:uppercase;--tone:#14814d}.more{padding:7px;font-size:20px}.requests input[type=checkbox]{accent-color:var(--campus-gold)}campus-pagination{display:block;margin-top:12px}dialog{margin:auto;width:min(440px,94vw);padding:20px}dialog::backdrop{background:#18203060}dialog header{padding:0 0 14px}dialog h2{font-size:18px!important;margin:0}dialog button{border:0;background:transparent;color:inherit;font-size:20px}dialog dl div{display:flex;justify-content:space-between;gap:10px;padding:5px 0}dialog dd{margin:0}.groups button:hover,.person:hover{color:var(--campus-gold-text)}
+.table-scroll th:first-child,.table-scroll td:first-child {width:46px;text-align:center}
+.table-scroll th:nth-child(2){width:22%}.table-scroll th:nth-child(3){width:17%}
+.table-scroll th:nth-child(4){width:28%}
+.table-scroll td:nth-child(5){color:var(--text-secondary-light)}
+.requests .table-scroll input[type=checkbox]{appearance:auto;position:static;opacity:1;width:15px;height:15px;display:block;margin:0 auto;cursor:pointer}
+
+.requests {container-type:inline-size}
+.request-filters {
+  display:grid;grid-template-columns:minmax(130px,1fr) 145px 155px;
+  width:min(100%,616px);align-items:center;gap:8px;
+}
+.request-filters label {
+  position:relative;display:flex;align-items:center;gap:8px;height:36px;min-width:0;
+  margin:0;padding:0 10px;border:1px solid var(--border-color);border-radius:8px;
+  background:var(--white);color:inherit;font-size:13px;line-height:1.2;
+}
+.request-filters label:focus-within {outline:2px solid var(--campus-gold);outline-offset:1px}
+.request-filters input {width:100%;min-width:0;height:100%;padding:0;border:0;background:transparent;color:inherit;outline:none}
+.leave-picker span {flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.leave-picker i {color:var(--campus-gold-text);font-size:12px}
+.leave-picker i:last-of-type {font-size:10px;color:var(--text-secondary-light)}
+.leave-picker select {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.requests .table-scroll :is(th,td) {vertical-align:middle}
+.requests .table-scroll :is(th,td):first-child {padding-inline:0}
+@container(max-width:1050px){.request-filters{width:100%}}
+@container(max-width:500px){
+  .request-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .request-filters label:first-child{grid-column:1/-1}
+}

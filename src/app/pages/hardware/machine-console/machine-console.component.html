@@ -1,0 +1,2 @@
+<nav aria-label="Machine console views">@for(item of tabs;track item;let i=$index){<a [href]="'#/hardware/machine-console/'+paths[i]" [attr.aria-current]="tab===item?'page':null"><i class="fa-solid fa-{{icons[i]}}"></i>{{item}}</a>}</nav>
+<ng-container *ngComponentOutlet="page"></ng-container>

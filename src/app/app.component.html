@@ -1,0 +1,63 @@
+@if(signedOut){<campus-signed-out></campus-signed-out>} @else {
+<div class="dashboard">
+<aside class="sidebar" [class.active]="collapsed && !mobile" [class.sidebar-open]="mobile">
+  <a [href]="link(modules[0])" class="sidebar-logo gst-logo" aria-label="CampusTrack dashboard"><span class="gst-logo-badge"><i class="fa-solid fa-graduation-cap"></i></span><span class="gst-logo-text text-tab"><strong>CampusTrack</strong><small>Office-Manager</small></span></a>
+  <nav class="sidebar-menu-area" aria-label="Campus modules"><ul class="sidebar-menu">
+  @for(m of modules;track m.name){
+    @if(m.sections.length){
+    <li class="flyout-item" (pointerleave)="leaveFlyout()" (focusout)="flyout===panel && !$any($event.currentTarget).contains($event.relatedTarget) && closeFlyout()">
+      <button type="button" #trigger class="module-trigger" [class.active-page]="m===current" [title]="m.name" [attr.aria-label]="m.name" [attr.aria-controls]="'submenu-'+slug(m.name)" [attr.aria-expanded]="flyout===panel" (pointerenter)="hoverFlyout(trigger,panel)" (click)="toggleFlyout(trigger,panel)" (keydown.arrowright)="$event.preventDefault();toggleFlyout(trigger,panel)">
+        <i class="gst-menu-icon" [class]="m.icon"></i><span class="text-tab">{{m.name}}</span><i class="fa-solid fa-angle-right menu-chevron"></i>
+      </button>
+      <nav #panel popover="manual" class="campus-flyout" [id]="'submenu-'+slug(m.name)" [attr.aria-label]="m.name+' submenu'" (pointerenter)="cancelClose()" (pointerleave)="leaveFlyout()">
+        <header><span class="flyout-symbol"><i [class]="m.icon" aria-hidden="true"></i></span><strong>{{m.name}}</strong><button type="button" aria-label="Close submenu" (click)="closeFlyout();trigger.focus()"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
+        @for(s of m.sections;track s){
+        @if(menuGroups[s]){<div class="menu-group">{{menuGroups[s]}}</div>}
+        <a class="section-link" [href]="link(m,s)" (click)="selectScreen($event,link(m,s))" [attr.aria-current]="m===current && s===section?'page':null">@if(menuIcons[s]){<i class="fa-solid" [class]="'fa-'+menuIcons[s]" aria-hidden="true"></i>}{{s}}</a>
+        }
+      </nav>
+    </li>
+    }@else{
+    <li><a class="module-trigger" [href]="link(m)" (click)="selectScreen($event,link(m))"
+           [class.active-page]="m===current && !accountPage" [attr.aria-current]="m===current && !accountPage?'page':null" [title]="m.name" [attr.aria-label]="m.name">
+      <i class="gst-menu-icon" [class]="m.icon"></i><span class="text-tab">{{m.name}}</span>
+    </a></li>
+    }
+  }  </ul></nav>
+</aside>
+@if(mobile){<button class="veil" aria-label="Close menu" (click)="mobile=false"></button>}
+<main class="dashboard-main" [class.active]="collapsed && !mobile">
+<header class="navbar-header campus-header"><div class="campus-head"><button class="menu-button" aria-label="Toggle menu" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button><strong>{{profile['Campus Name']}}</strong><span class="head-spacer"></span><button class="theme-button" aria-label="Toggle light or dark theme" (click)="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  <details class="account-menu" #account (keydown.escape)="account.open=false; accountTrigger.focus()" (focusout)="!account.contains($any($event.relatedTarget)) && (account.open=false)" (document:click)="dismissAccountOutside(account,$event.target)">
+    <summary #accountTrigger aria-label="Account menu"><span class="avatar">{{initials(accountName())}}</span><span class="user"><b>{{accountName()}}</b><small>Super Admin</small></span><i class="fa-solid fa-angle-down"></i></summary>
+    <nav class="account-panel" aria-label="Account">
+      <header><span class="avatar">{{initials(accountName())}}</span><div><strong>{{accountName()}}</strong><small>{{accountEmail()}}</small></div></header>
+      @for(item of accountLinks;track item.slug){
+        <a [href]="'#/account/'+item.slug" [attr.aria-current]="accountPage===item?'page':null" (click)="account.open=false;selectScreen($event,'#/account/'+item.slug)">
+          <i class="fa-solid" [class]="'fa-'+item.icon"></i><span><b>{{item.name}}</b><small>{{item.hint}}</small></span>
+        </a>
+      }
+      <button type="button" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+    </nav>
+  </details>
+</div></header>
+<div class="campus-body">
+@if(!accountPage){<div class="page-title"><div><small>CampusTrack / {{current.name}}</small><h1>{{section || 'Dashboard'}}</h1></div></div>}
+@if(accountPage){
+  <ng-container *ngComponentOutlet="accountPage.component"></ng-container>
+} @else if(current.name==='Dashboard'){
+  <campus-dashboard [moduleLink]="moduleLink"></campus-dashboard>
+} @else if(current.name==='User Directory' && section==='Students'){
+  <campus-students [campus]="profile['Campus Name']"></campus-students>
+} @else if(first && current.name==='Leave'){
+  <campus-leave-calendar [view]="leaveView" [views]="leaveViews" [base]="link(current,section)"></campus-leave-calendar>
+} @else if(first && current.name==='Settings'){
+  <campus-settings-campus-profile [profile]="profile"></campus-settings-campus-profile>
+} @else if(first && current.name==='Hardware'){
+  <campus-machine-console [tabs]="hardwareTabs" [tab]="tab"></campus-machine-console>
+} @else {
+  <ng-container *ngComponentOutlet="pageComponent"></ng-container>
+}
+</div></main></div>
+@if(passwordOpen){<campus-change-password (dismissed)="closePassword()"></campus-change-password>}
+}

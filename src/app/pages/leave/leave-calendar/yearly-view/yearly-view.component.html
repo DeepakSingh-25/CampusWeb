@@ -1,0 +1,1 @@
+<article class="panel"><header><h2>{{calendar.year}}</h2><div class="arrows"><button aria-label="Previous year" (click)="calendar.shift(-12)">‹</button><button aria-label="Next year" (click)="calendar.shift(12)">›</button></div></header><div class="year-months">@for(m of calendar.months;track m;let i=$index){<button (click)="calendar.openMonth(i)">{{m}}</button>}</div></article>

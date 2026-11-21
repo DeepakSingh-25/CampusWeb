@@ -1,0 +1,49 @@
+/* Sales & Invoices module.
+   Layout uses the old theme list markup (box, customdatatable, searchdivmain, tablefooterdiv, app-pagination)
+   and the old "Create New" offcanvas. Only the module colour changes: indigo #6366F1,
+   the same colour .gst-mod-sales uses in the sidebar, so the flyout sub-menu, the page
+   accents and the pagination all read as one module. */
+
+/* ── Module buttons (old .btn-darkpink / .btn-darkpink-outline pattern) ── */
+.btn-indigo { background-color: #6366F1; color: #fff; border: 1px solid #6366F1; }
+.btn-indigo:hover { background-color: inherit; color: #6366F1; border: 1px solid #6366F1; }
+.btn-indigo:hover svg path { fill: #6366F1; }
+.btn-indigo-outline { border: 1px solid #6366F1; color: #6366F1; }
+.btn-indigo-outline:hover { background-color: #6366F1; color: #fff; border: 1px solid #6366F1; }
+
+/* ── List pages ── */
+.sales-page .form-check-input { border: 1.5px solid #adb5bd; cursor: pointer; }
+.sales-page .form-check-input:checked { background-color: #6366F1; border-color: #6366F1; }
+.sales-page .active > .page-link { background: #6366F1 !important; border: 1px solid #6366F1 !important; color: #fff !important; }
+.sales-page .page-link { cursor: pointer; }
+.sales-page .page-link:hover { color: #6366F1 !important; background: rgba(99, 102, 241, 0.08) !important; border-color: #6366F1 !important; }
+.sales-page .page-item.disabled .page-link { opacity: 0.45; cursor: default; }
+.sales-page .page-link:focus { box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.2) !important; }
+.sales-page .doc-no { color: #6366F1; font-weight: 600; }
+.sales-page .icon-data-genrate { cursor: pointer; display: inline-block; transition: transform 0.4s; }
+.sales-page .icon-data-genrate.rotated { transform: rotate(360deg); }
+.sales-page .btn-light-danger:disabled { opacity: 0.5; }
+.sales-page .status-select { width: auto; }
+
+/* Status pills (extra states for documents) */
+.gst-pill-draft  { background: var(--neutral-100); color: var(--neutral-600); }
+.gst-pill-info   { background: var(--info-100);    color: var(--info-700); }
+[data-theme=dark] .gst-pill-info { background: rgba(59, 130, 246, 0.15); color: var(--info-400); }
+
+/* ── Create Invoice offcanvas (old theme offcanvas: coloured title + tinted header, footer with Save / Reset) ── */
+#createInvoice.offcanvas { --bs-offcanvas-width: min(880px, 100vw) !important; }
+#createInvoice .offcanvas-header { padding: 20px 30px; background: rgba(99, 102, 241, 0.05) !important; }
+#createInvoice .offcanvas-header h4.offcanvas-title { font-size: 24px !important; padding: 0 !important; color: #6366F1 !important; }
+#createInvoice .offcanvas-body { padding: 20px 30px; }
+#createInvoice .form-select { color: var(--text-primary-light) !important; }
+
+/* #createInvoice wins on specificity over the generic .menu-offcanvas rules, so the
+   dark panel's field borders are set here too — black 30% is invisible on it. */
+[data-theme=dark] #createInvoice .form-control,
+[data-theme=dark] #createInvoice .form-select,
+[data-theme=dark] #createInvoice textarea { border: 1px solid rgba(255, 255, 255, 0.3) !important; }
+#createInvoice .table th,
+#createInvoice .table td { vertical-align: middle; padding: 8px !important; }
+#createInvoice .table select[formcontrolname="gstRate"] { min-width: 92px; }
+#createInvoice .totals-table td { border: 0 !important; padding: 4px 8px !important; }
+#createInvoice .totals-table tr.grand td { border-top: 1px solid var(--border-color) !important; color: #6366F1; font-weight: 700; }

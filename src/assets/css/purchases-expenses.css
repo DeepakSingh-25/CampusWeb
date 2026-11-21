@@ -1,0 +1,61 @@
+/* Purchases & Expenses module.
+   Same old theme list markup as Sales & Invoices (box, customdatatable, searchdivmain,
+   tablefooterdiv, app-pagination) and the same "Create New" offcanvas. Only the module
+   colour changes: purchases red #EA4335 (matches .gst-mod-nms in the sidebar). */
+
+/* ── Module buttons (old .btn-darkpink / .btn-darkpink-outline pattern) ── */
+.btn-red { background-color: #EA4335; color: #fff; border: 1px solid #EA4335; }
+.btn-red:hover { background-color: inherit; color: #EA4335; border: 1px solid #EA4335; }
+.btn-red:hover svg path { fill: #EA4335; }
+.btn-red-outline { border: 1px solid #EA4335; color: #EA4335; }
+.btn-red-outline:hover { background-color: #EA4335; color: #fff; border: 1px solid #EA4335; }
+
+/* ── List pages ── */
+.purchase-page .form-check-input { border: 1.5px solid #adb5bd; cursor: pointer; }
+.purchase-page .form-check-input:checked { background-color: #EA4335; border-color: #EA4335; }
+.purchase-page .active > .page-link { background: #EA4335 !important; border: 1px solid #EA4335 !important; color: #fff !important; }
+.purchase-page .page-link { cursor: pointer; }
+.purchase-page .page-link:hover { color: #EA4335 !important; }
+.purchase-page .doc-no { color: #EA4335; font-weight: 600; }
+.purchase-page .icon-data-genrate { cursor: pointer; display: inline-block; transition: transform 0.4s; }
+.purchase-page .icon-data-genrate.rotated { transform: rotate(360deg); }
+.purchase-page .btn-light-danger:disabled { opacity: 0.5; }
+.purchase-page .status-select { width: auto; }
+
+/* Expense category tag */
+.purchase-page .cat-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(234, 67, 53, 0.08);
+  color: #EA4335;
+  white-space: nowrap;
+}
+
+/* -- Summary tiles --
+   The KPI tile system (wave background tones, colourful title / value / note)
+   lives in assets/css/gst-dashboard.css and is shared by every module. */
+
+/* ── Create offcanvas (coloured title + tinted header, footer with Save / Reset) ── */
+#createPurchaseBill.offcanvas,
+#createExpense.offcanvas { --bs-offcanvas-width: min(880px, 100vw) !important; }
+#createExpense.offcanvas { --bs-offcanvas-width: min(680px, 100vw) !important; }
+#createPurchaseBill .offcanvas-header,
+#createExpense .offcanvas-header { padding: 20px 30px; background: rgba(234, 67, 53, 0.05) !important; }
+#createPurchaseBill .offcanvas-header h4.offcanvas-title,
+#createExpense .offcanvas-header h4.offcanvas-title { font-size: 24px !important; padding: 0 !important; color: #EA4335 !important; }
+#createPurchaseBill .offcanvas-body,
+#createExpense .offcanvas-body { padding: 20px 30px; }
+#createPurchaseBill .form-select,
+#createExpense .form-select { color: var(--text-primary-light) !important; }
+#createPurchaseBill .form-check-input:checked,
+#createExpense .form-check-input:checked { background-color: #EA4335; border-color: #EA4335; }
+#createPurchaseBill .table th,
+#createPurchaseBill .table td { vertical-align: middle; padding: 8px !important; }
+#createPurchaseBill .table select[formcontrolname="gstRate"] { min-width: 92px; }
+#createPurchaseBill .totals-table td,
+#createExpense .totals-table td { border: 0 !important; padding: 4px 8px !important; }
+#createPurchaseBill .totals-table tr.grand td,
+#createExpense .totals-table tr.grand td { border-top: 1px solid var(--border-color) !important; color: #EA4335; font-weight: 700; }

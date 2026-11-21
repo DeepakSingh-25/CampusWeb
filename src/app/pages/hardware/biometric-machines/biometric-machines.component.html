@@ -1,0 +1,28 @@
+<header class="tools"><div class="groups" aria-label="Machine status">@for(s of ['','Online','Offline'];track s){<button [attr.aria-pressed]="status===s" (click)="setStatus(s)">{{s||'Machines'}} <b>{{count(s)}}</b></button>}<a href="#/hardware/machine-console/enrolled-users">Enrolled users <b>33</b></a></div>
+<label class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" aria-label="Search machines" placeholder="Search machine, branch, serial, IP…" [(ngModel)]="query" (ngModelChange)="paging.page=1"></label>
+<label class="picker"><i class="fa-solid fa-location-dot"></i><span>{{branch||'All branches'}}</span><i class="fa-solid fa-chevron-down"></i><select aria-label="Branch" [(ngModel)]="branch" (ngModelChange)="paging.page=1"><option value="">All branches</option>@for(b of branches;track b){<option>{{b}}</option>}</select></label>
+<label class="picker"><i class="fa-solid fa-filter"></i><span>{{status||'All statuses'}}</span><i class="fa-solid fa-chevron-down"></i><select aria-label="Connection status" [ngModel]="status" (ngModelChange)="setStatus($event)"><option value="">All statuses</option><option>Online</option><option>Offline</option></select></label>
+<div class="switch" role="group" aria-label="Machine layout"><button [attr.aria-pressed]="grid" (click)="grid=true"><i class="fa-solid fa-table-cells-large"></i> Grid</button><button [attr.aria-pressed]="!grid" (click)="grid=false"><i class="fa-solid fa-list"></i> List</button></div></header>
+@if(!rows.length){<p class="empty">No matching machines. <button (click)="query='';branch='';setStatus('')">Clear filters</button></p>}
+@else if(grid){<div class="machines">@for(m of paging.slice(rows);track m.serial){<article [class.offline]="m.status==='Offline'">
+<header class="identity"><i class="finger fa-solid fa-fingerprint"></i><div><strong>{{m.name}}</strong><small>{{m.gate}} · {{m.branch}}</small></div><span class="status">● {{m.status}}</span></header>
+<dl>@for(f of [[m.enrolled,'Enrolled'],[m.firmware,'Firmware'],[m.address,'Address']];track f[1]){<div><dt>{{f[1]}}</dt><dd>{{f[0]}}</dd></div>}</dl>
+<div class="caps">@for(method of methods;track method;let i=$index){<span [class.supported]="m.methods.includes(method)" [title]="m.methods.includes(method)?'Supported':'Unavailable'"><i class="fa-solid fa-{{['face-smile','fingerprint','id-card'][i]}}"></i> {{method}}</span>}</div>
+<footer><button class="primary" (click)="show(m,dialog)">ⓘ Details</button><button [attr.aria-label]="'Refresh '+m.name" title="Refresh demo status" (click)="refresh(m)"><i class="fa-solid fa-arrows-rotate"></i></button><button [attr.aria-label]="(m.status==='Online'?'Disconnect ':'Connect ')+m.name" title="Toggle demo connection" (click)="connect(m)"><i class="fa-solid" [class]="m.status==='Online'?'fa-link-slash':'fa-link'"></i></button></footer><small>◷ Last seen {{m.seen}}</small></article>}</div>}
+@else{
+  <div class="machine-list" tabindex="0" aria-label="Biometric machines list">
+    <table><thead><tr>@for(h of ['Machine','Branch','Enrolled','Address','Status'];track h){<th scope="col">{{h}}</th>}</tr></thead>
+    <tbody>@for(m of paging.slice(rows);track m.serial){
+      <tr [class.offline]="m.status==='Offline'">
+        <th scope="row"><div class="machine-name"><i class="fa-solid fa-fingerprint"></i><div><strong>{{m.name}}</strong><small>{{m.gate}}</small></div></div></th>
+        <td>{{m.branch}}</td><td>{{m.enrolled}}</td><td class="address">{{m.address}}</td>
+        <td><button class="disclosure" [attr.aria-expanded]="expanded===m.serial" [attr.aria-label]="'Details for '+m.name" (click)="expanded=expanded===m.serial?'':m.serial">
+          <span class="status">● {{m.status}}</span><i aria-hidden="true" class="fa-solid fa-chevron-down"></i>
+        </button></td>
+      </tr>
+      @if(expanded===m.serial){<tr><td colspan="5"><div class="machine-info"><span>Serial <b>{{m.serial}}</b></span><span>Firmware <b>{{m.firmware}}</b></span><span>{{m.methods.join(' · ')}}</span><span>Last seen {{m.seen}}</span><button (click)="show(m,dialog)">Details</button></div></td></tr>}
+    }</tbody></table>
+  </div>
+}
+<campus-pagination [total]="rows.length" noun="machines" [(window)]="paging"></campus-pagination>
+<dialog #dialog aria-labelledby="machine-name">@if(selected;as m){<header><strong id="machine-name">{{m.name}}</strong><button aria-label="Close" (click)="dialog.close()">×</button></header>@for(pair of [['Serial',m.serial],['Branch',m.branch],['Location',m.gate],['Address',m.address],['Firmware',m.firmware],['Connection',m.status],['Capture methods',m.methods.join(', ')],['Last seen',m.seen]];track pair[0]){<p><b>{{pair[0]}}</b><span>{{pair[1]}}</span></p>}}</dialog>

@@ -1,0 +1,145 @@
+/* Shared rules kept from the old HRMS theme files (job-posting, trip, employee, workflow...).
+   Only rules whose classes the GST app still uses. Loaded right after setup.css, where the
+   old files sat, so the cascade order stays the same. */
+/*  from job-posting.css  */
+.box {position: relative; transition: background-color 0.3s ease;}
+@media (max-width: 768px) {
+.border-top { display: flex; flex-wrap: wrap; justify-content: center; text-align: center;}
+.border-top button { margin-top: 5px;}}
+
+@media only screen and (max-width: 575px) {
+    .fs-18{font-size: 14px !important;}
+    
+}
+.close-btn { background: rgba(255, 255, 255, 0.30000001192092896);color: white;height: 25px; width: 25px; border-radius: 50px;justify-content: center; display: flex; align-items: center;}
+.green { background: #28A745; }
+.red { background: #DC3545; }
+.preview img { max-width: 100px; border-radius: 5px; margin-top: 10px;}
+/*  from daily-atendance.css  */
+.summary{background: #ffffff;border: 1px solid #e1e7ec;border-radius: 10px;}
+::placeholder {color: rgba(33, 36, 41, 0.5) !important;opacity: 1;}
+[data-theme=dark] .summary{background-color: var(--dark-1); border: 1px solid #3D3D3D;}
+[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 1;
+}
+/*  from trip-details.css  */
+.fs-12{font-size: 12px !important;}
+/*  from trip.css  */
+input::placeholder {color: white;opacity: 1;}
+.border-bottom{border-bottom: 1px solid rgba(0, 0, 0, 0.15);}
+@media only screen and (max-width: 1399px) {
+  }
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 1;}
+[data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 1;}
+/*  from status-atendance.css  */
+.blue-effect{box-shadow: 0px 0px 4px rgba(13, 153, 255, 0.35);}
+/*  from expense.css  */
+td { position: relative; }
+/*  from employee.css  */
+.fs-12{font-size: 12px !important;}
+::placeholder {color: rgba(33, 36, 41, 0.5) !important;opacity: 1;}
+[data-theme=dark] input[type="radio"] {border: 1px solid #fff !important; background-color: var(--dark-2) !important;color: #fff !important;}
+[data-theme="dark"] .form-select { background-color: var(--dark-2) !important; color: rgb(255, 255, 255) !important; }
+/*  from employee-detail.css  */
+.h3 {font-size: 18px !important;}
+.border-left{border-left: 1px solid rgba(0, 0, 0, 0.1);}
+input[type="file"] {
+    display: none;
+  }
+@media only screen and (max-width: 767px) {
+    .border-left{border-left: 0px !important; }
+}
+@media only screen and (max-width: 575px) {
+    .user{width: 70px;}
+    .h3 {font-size: 16px !important;}
+    }
+/*  from workflow.css  */
+:focus-visible { outline: none;}
+h6 { font-style: normal; font-weight: 600; margin-bottom: 0px}
+h1 { margin-bottom: 0px}
+Strong { margin-bottom: 0px; font-size: 15px;}
+.page-link, .disabled > .page-link { width: 32px; font-size: 15px; display: flex; text-align: center; justify-content: center; align-items: center; color: #212b36; height: 32px; align-items: center; background: #ffffff; display: flex; border: 1px solid #dfe3e8; border-radius: 4px; border-top-left-radius: 4px; border-bottom-left-radius: 4px;}
+.page-link:focus {    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem #f1b0d6;}
+.table-responsive ::-webkit-scrollbar { display: none;}
+.table-responsive{-ms-overflow-style: none; scrollbar-width: thin;}
+.text-gray{color: rgba(33, 36, 41, 0.800000011920929);}
+#Source{border: 1px solid rgba(0, 0, 0, 0.3);}
+.toolbar button { border: none; background: transparent; padding: 4px 6px;}
+.page-item.active .page-link { color: #fff !important; }
+[data-theme="dark"] .text-muted {
+  --bs-text-opacity: 1;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+[data-theme="dark"] .fa-magnifying-glass::before { color: #fff;}
+[data-theme="dark"] .border {border: 1px solid rgba(255, 255, 255, 0.2) !important;}
+[data-theme="dark"] .table > :not(caption) > * > * { color: #fff;}
+[data-theme="dark"] .table svg path{fill: #fff; fill-opacity: 1;}
+[data-theme="dark"] .dropdown-item {color: #fff}
+[data-theme="dark"] .text-gray {color: rgb(255, 255, 255);}
+[data-theme="dark"] .modal-header svg line{stroke: white; stroke-opacity: 1;}
+[data-theme="dark"] .modal-header svg path{fill: white; fill-opacity: 1;}
+[data-theme="dark"] .form-select, .form-control, textarea{background-color: transparent;}
+[data-theme="dark"] #Source { border: 1px solid rgba(255, 255, 255, 0.3); }
+[data-theme="dark"] .border-top {border-top: 1px solid rgba(255, 255, 255, 0.3) !important;}
+/*  from backlog.css  */
+@media only screen and (max-width: 717px) {
+}
+/*  from integration.css  */
+[data-theme=dark] h2 {color: #ffffff !important;}
+/*  from employee-details.css  */
+.h3 {font-size: 18px !important;}
+.border-left{border-left: 1px solid rgba(0, 0, 0, 0.1);}
+input[type="file"] {
+    display: none;
+  }
+@media only screen and (max-width: 767px) {
+    .border-left{border-left: 0px !important; }
+}
+@media only screen and (max-width: 575px) {
+    .user{width: 70px;}
+    .h3 {font-size: 16px !important;}
+    }
+/*  from notification.css  */
+.btn-red{color: #EA4335; border: 1px solid #EA4335;}
+.btn-red:hover{color: #ffffff; border: 1px solid transparent; background-color: #EA4335;}
+.btn-red:hover svg path{fill: #fff;}
+.btn-primary { background-color: #0D99FF; color: #fff;border: none; border: 1px solid transparent; }
+.fs-12{font-size: 12px;}
+/*  from roaster.css  */
+h1,h2,h3,h4,h5,h6 {margin-bottom: 0;}
+:root { --morning-bg: #FCB040; --evening-bg: #F599B8; --night-bg: #029D4A; --shift-morning-bg: rgba(252, 176, 64, 0.10000000149011612); --shift-morning-border: #FCB040; --shift-evening-bg: rgba(245, 153, 184, 0.10000000149011612); --shift-evening-border: #F599B8; --shift-night-bg: rgba(2, 157, 74, 0.10000000149011612); --shift-night-border: #029D4A;}
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active { background-color: #fff;}
+.fs-16{font-size: 16px !important;}
+[data-theme="dark"] .text-dark{color: #fff !important;}
+.btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active{background-color: transparent;}
+[data-theme="dark"] .table>:not(caption)>*>*{    background-color: var(--dark-1) !important;}
+@media only screen and (max-width: 717px) {
+.dashboard-body { margin-top: 96px;}}
+/*  from schedule-interview.css  */
+.controls {
+    font-weight: 300 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.controls button {
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    padding: 0 16px;
+    color: #ffffff;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -10px;
+}
+.controls button:hover {
+    color: #d2d2d2;
+}

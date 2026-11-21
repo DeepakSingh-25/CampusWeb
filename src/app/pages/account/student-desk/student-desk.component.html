@@ -1,0 +1,9 @@
+<section class="desk-layout"><nav class="desk-nav" aria-label="Student desk sections"><h2>Student Desk</h2>@for(g of groups;track g.name){@if(g.name){<small>{{g.name}}</small>}@for(item of g.items;track item){<button [attr.aria-pressed]="selected===item" (click)="selected=item">{{item}}</button>}}</nav>
+<div class="desk-main"><header class="desk-hero"><span class="student-avatar">AS</span><div class="grow"><h1>Good afternoon, Aarav</h1><p class="muted">B.Tech CSE · Sec A · Sem 5 · Computer Science · STU-24001</p></div><div class="teacher"><small>Class teacher</small><b>Nitin Bose</b></div></header>
+<nav class="quick" aria-label="Student shortcuts">@for(s of shortcuts;track s[0]){<button (click)="selected=s[1]">{{s[0]}}</button>}</nav>
+<div class="desk-grid">@for(c of visibleCards;track c.key){<article class="panel widget"><h2><i class="fa-solid fa-{{c.icon}}"></i>{{c.title}}</h2><div class="widget-content">
+@if(c.key==='My Attendance'){<div class="ring"><b>87%</b></div>}
+@if(c.stats.length){<div class="metrics">@for(s of c.stats;track s[1]){<div><b>{{s[0]}}</b><small [attr.data-outcome]="s[1]">{{s[1]}}</small></div>}</div>}
+@for(r of c.rows;track r[0]){<div class="row-line"><span>{{r[0]}}</span><b>{{r[1]}}</b></div>}
+@if(c.note){<p class="note">{{c.note}}</p>}</div></article>}
+@if(details[selected];as rows){<article class="panel widget"><h2>{{selected}}</h2><div class="widget-content">@for(r of rows;track r[0]){<div class="row-line"><b>{{r[0]}}</b><span>{{r[1]}}</span></div>}</div></article>}</div></div></section>

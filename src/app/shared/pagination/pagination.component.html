@@ -1,0 +1,20 @@
+@if(total > 0){
+  <nav class="pager" aria-label="Record pagination">
+    <label>Rows per page
+      <span class="size-picker"><span aria-hidden="true">{{window.size}}</span><i aria-hidden="true" class="fa-solid fa-chevron-down"></i>
+        <select aria-label="Rows per page" [value]="window.size" (change)="resize($event)">
+        @for(size of sizes; track size){<option [value]="size" [selected]="size===window.size">{{size}}</option>}
+        </select>
+      </span>
+    </label>
+    <span class="record-range" aria-live="polite">Showing <b>{{window.start + 1}}–{{end}}</b> of <b>{{total}}</b> {{noun}}</span>
+    <div class="paging">
+      <span>Page {{window.page}} of {{pages}}</span>
+      <button type="button" aria-label="First page" [disabled]="window.page <= 1" (click)="go(1)"><i class="fa-solid fa-angles-left"></i></button>
+      <button type="button" aria-label="Previous page" [disabled]="window.page <= 1" (click)="go(window.page - 1)"><i class="fa-solid fa-chevron-left"></i></button>
+      @for(n of numbers;track n){<button type="button" [attr.aria-label]="'Page '+n" [attr.aria-current]="n===window.page?'page':null" (click)="go(n)">{{n}}</button>}
+      <button type="button" aria-label="Next page" [disabled]="window.page >= pages" (click)="go(window.page + 1)"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      <button type="button" aria-label="Last page" [disabled]="window.page >= pages" (click)="go(pages)"><i class="fa-solid fa-angles-right"></i></button>
+    </div>
+  </nav>
+}

@@ -1,0 +1,98 @@
+/* Customers & Suppliers module.
+   Same old theme list markup as Purchases & Expenses (box, customdatatable, searchdivmain,
+   tablefooterdiv, app-pagination) and the same "Create New" offcanvas. Summary tiles reuse
+   the theme KPI wave backgrounds (bgimg-* in hrms.css). Module colour: plum #AE4B85
+   (matches .gst-mod-hrms in the sidebar). */
+
+/* ── Module buttons (old .btn-darkpink / .btn-darkpink-outline pattern) ── */
+.btn-plum { background-color: #AE4B85; color: #fff; border: 1px solid #AE4B85; }
+.btn-plum:hover { background-color: inherit; color: #AE4B85; border: 1px solid #AE4B85; }
+.btn-plum:hover svg path { fill: #AE4B85; }
+.btn-plum-outline { border: 1px solid #AE4B85; color: #AE4B85; }
+.btn-plum-outline:hover { background-color: #AE4B85; color: #fff; border: 1px solid #AE4B85; }
+
+/* ── List pages ── */
+.party-page .form-check-input { border: 1.5px solid #adb5bd; cursor: pointer; }
+.party-page .form-check-input:checked { background-color: #AE4B85; border-color: #AE4B85; }
+.party-page .active > .page-link { background: #AE4B85 !important; border: 1px solid #AE4B85 !important; color: #fff !important; }
+.party-page .page-link { cursor: pointer; }
+.party-page .page-link:hover { color: #AE4B85 !important; }
+.party-page .doc-no { color: #AE4B85; font-weight: 600; }
+.party-page .icon-data-genrate { cursor: pointer; display: inline-block; transition: transform 0.4s; }
+.party-page .icon-data-genrate.rotated { transform: rotate(360deg); }
+.party-page .btn-light-danger:disabled { opacity: 0.5; }
+.party-page .status-select { width: auto; }
+
+/* ── Summary tiles: theme KPI wave background (bgimg-*) + module typography ── */
+.party-page .cs-tile {
+  /* Wave lines sit in the lower part of the theme image; show that part on short tiles */
+  background-position: center 85% !important;
+  height: 100%;
+  padding: 0.75rem 1rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.party-page .cs-tile:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); }
+
+.party-page .tone-blue   { --tone: #0D99FF; --tone-bg: rgba(13, 153, 255, 0.12); }
+.party-page .tone-green  { --tone: #029D4A; --tone-bg: rgba(2, 157, 74, 0.12); }
+.party-page .tone-orange { --tone: #E58209; --tone-bg: rgba(252, 176, 64, 0.16); }
+.party-page .tone-red    { --tone: #EA4335; --tone-bg: rgba(234, 67, 53, 0.12); }
+.party-page .tone-plum   { --tone: #AE4B85; --tone-bg: rgba(174, 75, 133, 0.12); }
+
+.party-page .cs-tile-title { font-size: 0.8125rem; color: var(--neutral-600); line-height: 1.3; }
+
+.party-page .cs-tile-icon {
+  flex-shrink: 0;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  color: var(--tone);
+  background: var(--tone-bg);
+}
+
+.party-page .cs-tile-value {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.25rem 0 0.125rem;
+  color: var(--tone);
+}
+
+.party-page .cs-tile-sub { font-size: 0.6875rem; color: var(--neutral-500); }
+
+/* ── Outstanding: ageing split under the table ── */
+.party-page .ageing-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.party-page .ageing-cell {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  background: rgba(174, 75, 133, 0.04);
+}
+.party-page .ageing-label { font-size: 0.6875rem; color: var(--neutral-600); }
+.party-page .ageing-amount { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary-light); }
+
+@media (max-width: 767.98px) {
+  .party-page .ageing-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ── Create offcanvas (coloured title + tinted header, footer with Save / Reset) ── */
+#createCustomer.offcanvas,
+#createSupplier.offcanvas { --bs-offcanvas-width: min(760px, 100vw) !important; }
+#createCustomer .offcanvas-header,
+#createSupplier .offcanvas-header { padding: 20px 30px; background: rgba(174, 75, 133, 0.05) !important; }
+#createCustomer .offcanvas-header h4.offcanvas-title,
+#createSupplier .offcanvas-header h4.offcanvas-title { font-size: 24px !important; padding: 0 !important; color: #AE4B85 !important; }
+#createCustomer .offcanvas-body,
+#createSupplier .offcanvas-body { padding: 20px 30px; }
+#createCustomer .form-select,
+#createSupplier .form-select { color: var(--text-primary-light) !important; }
+#createCustomer .form-check-input:checked,
+#createSupplier .form-check-input:checked { background-color: #AE4B85; border-color: #AE4B85; }

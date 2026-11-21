@@ -1,0 +1,215 @@
+/* GST Reports & Accounting module.
+   Same old theme list markup as the other modules (box, customdatatable, searchdivmain,
+   tablefooterdiv, app-pagination). Summary tiles reuse the theme KPI wave backgrounds
+   (bgimg-* in hrms.css). Module colour: green #029D4A (matches .gst-mod-reports in the sidebar). */
+
+/* -- Module buttons (old .btn-darkpink / .btn-darkpink-outline pattern) -- */
+.btn-green { background-color: #029D4A; color: #fff; border: 1px solid #029D4A; }
+.btn-green:hover { background-color: inherit; color: #029D4A; border: 1px solid #029D4A; }
+.btn-green:hover svg path { fill: #029D4A; }
+.btn-green-outline { border: 1px solid #029D4A; color: #029D4A; }
+.btn-green-outline:hover { background-color: #029D4A; color: #fff; border: 1px solid #029D4A; }
+
+/* -- List pages -- */
+.report-page .form-check-input { border: 1.5px solid #adb5bd; cursor: pointer; }
+.report-page .form-check-input:checked { background-color: #029D4A; border-color: #029D4A; }
+.report-page .active > .page-link { background: #029D4A !important; border: 1px solid #029D4A !important; color: #fff !important; }
+.report-page .page-link { cursor: pointer; }
+.report-page .page-link:hover { color: #029D4A !important; }
+.report-page .doc-no { color: #029D4A; font-weight: 600; }
+.report-page .icon-data-genrate { cursor: pointer; display: inline-block; transition: transform 0.4s; }
+.report-page .icon-data-genrate.rotated { transform: rotate(360deg); }
+/* -- List toolbar --
+   Show / period / status on the left, export + search + reload on the right, all on one
+   line. The selects are compact and never stretch, so the row does not wrap on a laptop. */
+.report-page .report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+}
+
+.report-page .toolbar-left,
+.report-page .toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.report-page .toolbar-right { gap: 0.75rem; }
+
+.report-page .toolbar-label {
+  font-size: 0.8125rem;
+  color: var(--neutral-500);
+  white-space: nowrap;
+}
+
+/* Compact selects, wherever they sit: list toolbar or a page heading */
+.report-page .entries-select,
+.report-page .period-select,
+.report-page .status-select {
+  width: auto !important;
+  flex: 0 0 auto;
+  font-size: 0.8125rem;
+  padding: 0.3125rem 2rem 0.3125rem 0.75rem !important;
+}
+
+.report-page .entries-select { min-width: 4.25rem; }
+.report-page .period-select { min-width: 7.5rem; }
+.report-page .status-select { min-width: 9rem; }
+
+.report-page .toolbar-right .searchdivmain { min-width: 11rem; }
+.report-page .toolbar-right .searchdivmain input { font-size: 0.8125rem; }
+
+/* Compact cells: dates and status pills stay on one line and take no extra width */
+.report-page .cell-date,
+.report-page .cell-status {
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  width: 1%;
+}
+
+/* Supply type / section tag */
+.report-page .type-tag {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(2, 157, 74, 0.08);
+  color: #029D4A;
+  white-space: nowrap;
+}
+
+/* Period chip shown next to every report heading */
+.report-page .period-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(2, 157, 74, 0.08);
+  color: #029D4A;
+}
+
+/* -- Summary tiles --
+   The KPI tile system (wave background tones, colourful title / value / note)
+   lives in assets/css/gst-dashboard.css and is shared by every module. */
+
+/* -- Return pages (GSTR-1 / GSTR-3B) -- */
+.report-page .section-card {
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--white);
+  padding: 0.875rem 1rem;
+  height: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.report-page .section-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.report-page .section-card.selected {
+  border-color: #029D4A;
+  box-shadow: 0 0 0 2px rgba(2, 157, 74, 0.15);
+}
+
+.report-page .section-code {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #029D4A;
+}
+
+.report-page .section-title { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary-light); margin: 0; }
+.report-page .section-desc { font-size: 0.6875rem; color: var(--neutral-500); min-height: 2rem; }
+.report-page .section-metric {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary-light);
+  white-space: nowrap;
+}
+
+.report-page .section-metric-label { font-size: 0.625rem; color: var(--neutral-500); }
+
+/* Return tables (3B style: label column wide, amount columns right aligned) */
+/* Portal style return tables: a wide label column, the rest compact and nowrap so the
+   amounts line up and the table fits the card without a cut-off column. */
+.report-page .return-table { font-size: 0.8125rem; }
+.report-page .return-table th,
+.report-page .return-table td { padding: 0.5rem 0.75rem; vertical-align: middle; }
+.report-page .return-table th { white-space: nowrap; font-size: 0.75rem; }
+.report-page .return-table td:not(.label-col) { white-space: nowrap; }
+.report-page .return-table th.label-col,
+.report-page .return-table td.label-col { width: 34%; min-width: 15rem; white-space: normal; }
+.report-page .return-table .row-note { font-size: 0.6875rem; color: var(--neutral-500); }
+.report-page .return-table tr.total-row td {
+  font-weight: 700;
+  background: rgba(2, 157, 74, 0.05);
+  color: var(--text-primary-light);
+}
+.report-page .return-table tr.net-row td { color: #029D4A; font-weight: 700; }
+
+/* -- Reconciliation -- */
+.report-page .gst-pill-matched { background: var(--success-100); color: var(--success-700); }
+.report-page .gst-pill-mismatch { background: var(--warning-100); color: var(--warning-800); }
+.report-page .gst-pill-books { background: rgba(13, 153, 255, 0.12); color: #0D99FF; }
+.report-page .gst-pill-2b { background: rgba(130, 82, 233, 0.12); color: #8252E9; }
+.report-page .diff-plus { color: #EA4335; font-weight: 600; }
+.report-page .diff-minus { color: #0D99FF; font-weight: 600; }
+
+[data-theme=dark] .report-page .gst-pill-matched { color: var(--success-400); }
+[data-theme=dark] .report-page .gst-pill-mismatch { background: rgba(255, 159, 41, 0.15); color: var(--warning-600); }
+
+/* -- Export reports grid -- */
+.report-page .export-card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--white);
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.report-page .export-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.report-page .export-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.9375rem;
+  color: var(--tone);
+  background: var(--tone-bg);
+}
+
+.report-page .export-title { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary-light); margin: 0; }
+.report-page .export-desc { font-size: 0.75rem; color: var(--neutral-500); flex-grow: 1; }
+
+.report-page .format-btn {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary-light);
+}
+
+.report-page .format-btn:hover { border-color: #029D4A; color: #029D4A; }

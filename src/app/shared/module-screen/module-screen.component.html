@@ -1,0 +1,39 @@
+@if(section==='Setup'){
+<form class="gst-card config" #config="ngForm" (ngSubmit)="config.valid && save()">
+  <h2 class="gst-card-title">{{moduleName}} settings</h2>
+  <div class="inputs">@for(field of settingFields;track field){<label>{{field}}
+    @if(field==='Default view'){<select class="form-select" [name]="field" [(ngModel)]="settings[field]" (ngModelChange)="message=''"><option>Grid</option><option>List</option></select>}
+    @else{<input required class="form-control" [name]="field" [(ngModel)]="settings[field]" (ngModelChange)="message=''">}
+  </label>}</div>
+  <button class="btn btn-primary" [disabled]="config.invalid">Save changes</button> <span role="status">{{message}}</span>
+</form>
+}@else{
+@if(section==='Reports'){
+  <div class="report-bar gst-card"><label>Report <select class="form-select" [(ngModel)]="report" (ngModelChange)="loadScreen()">@for(r of reports;track r){<option>{{r}}</option>}</select></label>
+  <button type="button" class="btn btn-primary" (click)="exportReport()"><i class="fa-solid fa-download"></i> Export CSV</button></div>
+}
+<div class="record-toolbar" [class.directory-tools]="moduleName==='User Directory'"><label class="search"><i class="fa-solid fa-magnifying-glass"></i><input class="form-control" type="search" [(ngModel)]="query" (ngModelChange)="paging.page=1" [attr.aria-label]="'Search '+section" [placeholder]="'Search '+(section==='Reports'?report:section).toLowerCase()+'…'"></label>
+@if(choices.length){
+  <label class="facet">
+    <span aria-hidden="true">{{filter || lastField+' · All'}}</span>
+    <i aria-hidden="true" class="fa-solid fa-caret-down"></i>
+    <select [(ngModel)]="filter" (ngModelChange)="paging.page=1" [attr.aria-label]="'Filter by '+lastField">
+      <option value="">{{lastField}} · All</option>@for(value of choices;track value){<option>{{value}}</option>}
+    </select>
+  </label>
+}
+<small aria-live="polite">{{rows.length}} of {{source.rows.length}} records</small>
+@if(source.grid && section!=='Reports'){<div class="view-toggle" role="group" aria-label="Record layout"><button type="button" aria-label="Grid view" title="Grid view" [attr.aria-pressed]="grid" (click)="grid=true"><i class="fa-solid fa-table-cells-large" aria-hidden="true"></i></button><button type="button" aria-label="List view" title="List view" [attr.aria-pressed]="!grid" (click)="grid=false"><i class="fa-solid fa-list" aria-hidden="true"></i></button></div>}
+</div>
+@if(!rows.length){<div class="gst-card empty-state">{{section==='Trash' && !source.rows.length?'Trash is empty.':'No matching records.'}} @if(query || filter){<button class="gst-view-all" (click)="query='';filter=''">Clear filters</button>}</div>}
+@else if(grid){
+<div class="directory-grid">@for(row of paging.slice(rows);track row[0];let i=$index){<article class="gst-card person"><header><span class="initial" [attr.data-tone]="i%4">@if(moduleName==='User Directory'){ {{initials(row[0])}} }@else{<i [class]="icon"></i>}</span><div><h2 class="gst-card-title">{{row[0]}}</h2><small>{{row[1]}}</small></div></header>
+<dl>@for(field of source.fields.slice(2,-1);track field;let j=$index){<div><dt>{{field}}</dt><dd><span [attr.data-outcome]="row[j+2]">{{row[j+2]}}</span></dd></div>}</dl>
+<footer><span class="pill" [attr.data-outcome]="row[row.length-1]">{{row[row.length-1]}}</span><button class="gst-view-all" (click)="selected=row;detail.showModal()">{{moduleName==='User Directory'?'View profile':'View details'}}</button></footer></article>}</div>
+}@else{
+<div class="campus-list table-scroll"><table [attr.aria-label]="section"><thead><tr>@for(field of source.fields;track field){<th scope="col">{{field}}</th>}<th scope="col"><span class="visually-hidden">Details</span></th></tr></thead><tbody>@for(row of paging.slice(rows);track row){<tr><th scope="row"><button class="list-identity" (click)="selected=row;detail.showModal()"><span class="list-symbol">@if(moduleName==='User Directory'){ {{initials(row[0])}} }@else{<i [class]="icon"></i>}</span><strong>{{row[0]}}</strong></button></th>@for(value of row.slice(1);track $index;let last=$last){<td>@if(last){<span class="pill" [attr.data-outcome]="value">{{value}}</span>}@else{<span [attr.data-outcome]="value">{{value}}</span>}</td>}<td><button class="list-action more" [attr.aria-label]="'Details for '+row[0]" (click)="selected=row;detail.showModal()"><i class="fa-solid fa-angle-right"></i></button></td></tr>}</tbody></table></div>
+}
+<campus-pagination [total]="rows.length" [(window)]="paging"></campus-pagination>
+<dialog #detail aria-labelledby="detail-heading" (close)="selected=[]"><header><h2 class="gst-card-title" id="detail-heading">{{selected[0]}}</h2><button aria-label="Close details" (click)="detail.close()">×</button></header>
+<dl>@for(field of source.fields.slice(1);track field;let i=$index){<div><dt>{{field}}</dt><dd><span [attr.data-outcome]="selected[i+1]">{{selected[i+1]}}</span></dd></div>}</dl></dialog>
+}

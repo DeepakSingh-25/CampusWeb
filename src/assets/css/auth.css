@@ -1,0 +1,539 @@
+/* Auth screens (login / sign up / forgot password).
+   The layout, the wave backgrounds and the #login form styling come from the old
+   theme's log-in.css, which is light only and hardcodes #000 / #fff. This file adds
+   what the GST app needs on top: a scrollable panel for the longer sign up form,
+   the OTP box, the password strength bar, and a dark mode pass over everything
+   log-in.css nailed to white. Keep the shared bits here, not in the components. */
+
+/* ── Outer row ──────────────────────────────────────────────────────────── */
+/* #login is a Bootstrap .row sitting directly on the page, with no container to
+   absorb its negative gutters — that 12px is what put a horizontal scrollbar on
+   the body. Its two columns are full-bleed backgrounds, so they want no gutter. */
+#login.row {
+  margin-inline: 0;
+  --bs-gutter-x: 0;
+}
+
+#login.row > [class*="col-"] {
+  padding-inline: 0;
+}
+
+/* --bs-gutter-x inherits, so the form rows inside get their gutter back */
+#login .row:not(#login) {
+  --bs-gutter-x: 1.5rem;
+}
+
+/* ── Right hand panel ───────────────────────────────────────────────────── */
+/* Anchors the theme toggle and lets the sign up form scroll instead of pushing
+   the 100vh row taller than the viewport. */
+#login .auth-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* One readable column, centred, with a thin scrollbar for the long sign up form */
+#login .auth-scroll {
+  width: 100%;
+  max-width: 34rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-block: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(13, 153, 255, 0.35) transparent;
+}
+
+#login .auth-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+#login .auth-scroll::-webkit-scrollbar-thumb {
+  background: rgba(13, 153, 255, 0.35);
+  border-radius: 6px;
+}
+
+#login .auth-heading {
+  font-size: 1.625rem;
+  margin: 1.5rem 0 0.25rem;
+}
+
+#login .auth-subheading {
+  font-size: 0.875rem;
+  color: var(--neutral-500);
+  margin-bottom: 0;
+}
+
+/* ── Sign up sections ───────────────────────────────────────────────────── */
+#login .auth-section {
+  margin-top: 1.5rem;
+}
+
+#login .auth-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #0D99FF;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(13, 153, 255, 0.25);
+}
+
+#login .auth-section-title i {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  background: rgba(13, 153, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+}
+
+#login .auth-section .form-label {
+  font-size: 0.875rem;
+  margin-bottom: 0.3rem !important;
+}
+
+#login .auth-section .form-control,
+#login .auth-section .form-select {
+  height: 2.75rem;
+  font-size: 0.9375rem;
+}
+
+#login .auth-section .text-danger,
+#login .auth-section small {
+  font-size: 0.75rem;
+}
+
+#login .auth-section small.text-muted {
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Brand blue, the dashboard accent from the sidebar's .gst-mod-dashboard */
+#login .auth-link {
+  color: #0D99FF;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#login .auth-link:hover {
+  color: #0B74C4;
+}
+
+#login h3 {
+  font-weight: 600;
+}
+
+/* Same GST badge + wordmark as the sidebar, so the brand is one thing everywhere */
+#login .auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+#login .auth-logo-badge {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: #0D99FF;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#login .auth-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+#login .auth-logo-text strong {
+  font-size: 1.05rem;
+  color: var(--text-primary-light);
+}
+
+#login .auth-logo-text small {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+/* The password eye lives in an input-group, so the field loses its right radius */
+#login .input-group .form-control {
+  border-radius: 4px 0 0 4px;
+  border-right: none;
+}
+
+#login .pass-icon {
+  cursor: pointer;
+}
+
+/* The sign up form nests a .row inside .fieldform, which has no padding of its
+   own to absorb the row's negative gutters */
+#login .fieldform {
+  padding-inline: 0.75rem;
+}
+
+/* Section rules on the sign up form */
+#login hr.border-primary {
+  border-color: #0D99FF !important;
+  opacity: 0.5;
+}
+
+/* Checkbox + label on one line, centred, with a clear gap (e.g. "Remember me") */
+#login .form-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: auto;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+#login .form-check-label {
+  font-size: 0.875rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* The theme resets the checkbox fill, so the box reads as blank on the white panel */
+#login .form-check-input {
+  float: none;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--input-stroke);
+  cursor: pointer;
+}
+
+#login .form-check-input:checked {
+  background-color: #0D99FF;
+  border-color: #0D99FF;
+  /* white tick — the theme clears Bootstrap's check image */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+/* The theme paints a purple inner square here; the tick above replaces it */
+#login .form-check-input::before {
+  display: none;
+}
+
+#login .form-check-input:focus {
+  border-color: #0D99FF;
+  box-shadow: 0 0 0 0.15rem rgba(13, 153, 255, 0.15);
+}
+
+/* ── Password strength bar ──────────────────────────────────────────────── */
+#login .progress,
+.settings-page .progress {
+  height: 6px;
+  border-radius: 5px;
+}
+
+/* ── OTP verification popup ─────────────────────────────────────────────── */
+#otpModal .modal-content {
+  background-color: var(--white);
+  color: var(--text-primary-light);
+  border-radius: 10px;
+}
+
+#otpModal .modal-header,
+#otpModal .modal-footer {
+  border: 0;
+}
+
+/* The theme strips .btn-close's background image, so the X is drawn as an icon */
+#otpModal .close-btn {
+  top: 1rem;
+  inset-inline-end: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--neutral-500);
+  font-size: 1.0625rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#otpModal .close-btn:hover {
+  border-color: #0D99FF;
+  color: #0D99FF;
+}
+
+#otpModal .otp {
+  width: 100%;
+  max-width: 24rem;
+  border-radius: 10px;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid var(--input-stroke);
+  background-color: var(--white);
+  color: var(--text-primary-light);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+}
+
+#otpModal .otp:focus {
+  border-color: #0D99FF;
+  box-shadow: 0 0 0 0.15rem rgba(13, 153, 255, 0.15);
+}
+
+#otpModal .otp::placeholder {
+  letter-spacing: normal;
+  text-indent: 0;
+  font-weight: 400;
+  color: var(--neutral-400);
+}
+
+#otpModal .otp-hint {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+}
+
+#otpModal .resend-link {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+  color: #0D99FF;
+}
+
+#otpModal .resend-link.disabled {
+  color: var(--neutral-400);
+  cursor: default;
+  text-decoration: none;
+}
+
+/* ── Shared lead / hint text on the auth panels ─────────────────────────── */
+#login .verify-lead {
+  font-size: 0.875rem;
+  color: var(--neutral-500);
+  margin-bottom: 0.5rem;
+}
+
+#login .verify-hint {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+  margin-bottom: 1rem;
+}
+
+#login .otp-boxes {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+#login .otp-box {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 1 / 1.15;
+  max-width: 3.25rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid var(--input-stroke);
+  background: var(--white);
+  color: var(--text-primary-light);
+  outline: none;
+}
+
+#login .otp-box.filled {
+  border-color: #0D99FF;
+}
+
+#login .otp-box:focus {
+  border-color: #0D99FF;
+  box-shadow: 0 0 0 0.15rem rgba(13, 153, 255, 0.15);
+}
+
+#login .otp-box.is-error {
+  border-color: var(--danger-600, #dc3545);
+}
+
+#login .verify-status {
+  font-size: 0.8125rem;
+  margin: 0.625rem 0 0;
+}
+
+#login .resend-link.disabled {
+  color: var(--neutral-400);
+  cursor: default;
+  text-decoration: none;
+}
+
+/* ── Accept invite summary ──────────────────────────────────────────────── */
+#login .invite-summary {
+  margin-top: 1rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: rgba(13, 153, 255, 0.05);
+}
+
+#login .invite-company {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #0D99FF;
+}
+
+#login .invite-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  color: var(--neutral-600);
+}
+
+/* ── Two-factor challenge ───────────────────────────────────────────────── */
+#login .backup-input {
+  max-width: 14rem;
+  margin: 0.5rem auto 0;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* The toast container is static, so it stacks in document order and anything with
+   a z-index — a Bootstrap modal, an offcanvas — covers it. Give it a stacking
+   context of its own, above both. */
+app-notification .notification-container {
+  position: relative;
+  z-index: 1080;
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────── */
+/* log-in.css paints the labels, headings, fields and "text-black" lines black and
+   the inputs white with !important, so each of those needs answering here. */
+[data-theme=dark] #login .bg-img-right,
+[data-theme=dark] #login .bg-img {
+  background-blend-mode: multiply;
+  background-color: rgba(10, 16, 26, 0.72);
+}
+
+[data-theme=dark] #login h3,
+[data-theme=dark] #login .form-label,
+[data-theme=dark] #login form .text-black,
+[data-theme=dark] #login .text-black {
+  color: var(--text-primary-light) !important;
+}
+
+[data-theme=dark] #login .form-control,
+[data-theme=dark] #login .form-select,
+[data-theme=dark] #login .pass-icon {
+  background: var(--neutral-100) !important;
+  color: var(--text-primary-light) !important;
+  border-color: var(--input-form-dark);
+  box-shadow: none;
+}
+
+[data-theme=dark] #login-password:focus,
+[data-theme=dark] #login .form-control:focus {
+  background-color: var(--neutral-100) !important;
+}
+
+[data-theme=dark] #login .form-control::placeholder {
+  color: var(--neutral-400);
+}
+
+[data-theme=dark] #login .text-gray,
+[data-theme=dark] #login .text-muted {
+  color: var(--neutral-500) !important;
+}
+
+/* The store badges are light artwork on a now dark panel */
+[data-theme=dark] #login .store-img {
+  filter: brightness(0.92);
+}
+
+[data-theme=dark] #login .otp-box,
+[data-theme=dark] #otpModal .otp {
+  background-color: var(--neutral-100);
+  border-color: var(--input-form-dark);
+}
+
+[data-theme=dark] #otpModal .close-btn {
+  background: var(--neutral-100);
+}
+
+/* The mobile / email artwork in the popup is a dark line drawing */
+[data-theme=dark] #otpModal .modal-content > .text-center img {
+  filter: brightness(1.15);
+}
+
+[data-theme=dark] #login .otp-box.filled,
+[data-theme=dark] #login .otp-box:focus {
+  border-color: #0D99FF;
+}
+
+[data-theme=dark] #login .invite-summary {
+  background: rgba(13, 153, 255, 0.1);
+}
+
+[data-theme=dark] #login .invite-chip {
+  background: var(--neutral-100);
+  color: var(--neutral-600);
+}
+
+/* ── Narrow screens ─────────────────────────────────────────────────────── */
+/* The carousel column is just decoration, so below lg it gives the form the
+   full height instead of stacking a second 100vh panel under it. */
+@media only screen and (max-width: 991px) {
+  #login.h100-vh {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  #login .login-leftimg {
+    display: none !important;
+  }
+
+  #login .auth-panel {
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  #login .auth-scroll {
+    max-height: none;
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  #login .auth-scroll > .p-4 {
+    padding: 1rem !important;
+    margin-inline: 0 !important;
+  }
+
+  /* Six boxes plus gaps do not fit a small phone at the desktop size */
+  #login .otp-boxes {
+    gap: 0.375rem;
+  }
+
+  #login .otp-box {
+    font-size: 1.0625rem;
+  }
+}
