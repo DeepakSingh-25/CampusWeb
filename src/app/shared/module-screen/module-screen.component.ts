@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, output } from '@angular/core';
+import { CampusSession } from '../../pages/account/campus-session';
 import { FormsModule } from '@angular/forms';
 import { PageWindow, Pagination } from '../pagination/pagination.component';
 import { reportSources, screens, setupValues, Screen } from '../../data/screens';
@@ -8,6 +9,9 @@ export class ModuleScreen implements OnChanges {
   @Input({required:true}) moduleName = '';
   @Input({required:true}) section = '';
   @Input() icon = '';
+  @Input() records?: Screen;
+  @Input() editable = false;
+  readonly editRecord = output<string[]>();
   source: Screen = {fields:[],rows:[]};
   query = '';
   filter = '';
@@ -19,21 +23,24 @@ export class ModuleScreen implements OnChanges {
   reports: string[] = [];
   selected: string[] = [];
   paging = new PageWindow();
+  private readonly session = inject(CampusSession);
   get key(){return 'campustrack.setup.'+this.moduleName;}
   ngOnChanges(){
     this.query=''; this.filter=''; this.message=''; this.selected=[];
     this.reports=reportSources[this.moduleName] || [];
     this.report=this.reports[0] || '';
     this.settings={...setupValues[this.moduleName]};
-    try {Object.assign(this.settings,JSON.parse(localStorage.getItem(this.key) || '{}'));} catch {}
+    if(setupValues[this.moduleName]) {
+      try {Object.assign(this.settings,JSON.parse(localStorage.getItem(this.key) || '{}'));} catch {}
+    }
     this.settingFields=Object.keys(setupValues[this.moduleName] || {});
     this.loadScreen();
   }
   loadScreen(){
     this.paging.page=1;
-    this.source=screens[this.moduleName]?.[this.section==='Reports'?this.report:this.section] || {fields:[],rows:[]};
+    this.source=this.records || screens[this.moduleName]?.[this.section==='Reports'?this.report:this.section] || {fields:[],rows:[]};
     this.grid=!!this.source.grid && this.section!=='Reports';
-    if(this.moduleName==='User Directory')this.grid=this.settings['Default view']!=='List';
+    if(this.moduleName==='User Directory')this.grid=this.session.user()?.directoryView!=='List';
     this.filter=''; this.query='';
   }
   get lastField(){return this.source.fields[this.source.fields.length-1];}

@@ -1,2 +1,45 @@
-<main class="account-card signed-out"><h1>Signed out</h1><p>Your CampusTrack demo session has ended.</p>
-<button class="account-primary" (click)="signIn()">Enter demo as Super Admin</button></main>
+<main class="signin-page">
+  <section class="signin-shell" aria-label="CampusTrack sign in">
+    <aside class="welcome-panel">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span><span>Campus<span class="brand-accent">Track</span><small>CAMPUS MANAGEMENT</small></span></div>
+      <div class="welcome-content">
+        <span class="eyebrow">YOUR CAMPUS, CONNECTED</span>
+        <h2>A better day on campus starts here.</h2>
+        <p>Everything you need to keep your campus moving, all in one place.</p>
+        <div class="welcome-divider"></div>
+        <div class="feature"><span><i class="fa-solid fa-users" aria-hidden="true"></i></span><div><strong>People, together</strong><small>Keep your campus community connected</small></div></div>
+        <div class="feature"><span><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span><div><strong>Clarity, every day</strong><small>Stay on top of what matters most</small></div></div>
+      </div>
+      <p class="welcome-footer">A simpler way to manage your campus.</p>
+    </aside>
+    <div class="form-panel">
+      <div class="mobile-brand"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> CampusTrack</div>
+      <div class="form-content">
+        <div class="form-icon"><i class="fa-solid" [class.fa-envelope-open-text]="challenge()" [class.fa-arrow-right-to-bracket]="!challenge()" aria-hidden="true"></i></div>
+        <p class="form-eyebrow">{{challenge() ? 'ONE MORE STEP' : 'WELCOME BACK'}}</p>
+        <h1>{{challenge() ? 'Verify your email' : 'Sign in to your account'}}</h1>
+        <p class="intro">{{challenge() ? 'Enter the 6-digit code sent to your email to continue.' : 'Enter your details to access your CampusTrack workspace.'}}</p>
+        @if(session.error()){
+          <div class="notice" role="alert"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i><span>{{session.error()}}</span></div>
+          <button class="text-button retry" type="button" [disabled]="busy()" (click)="retrySession()">Retry session check</button>
+        }
+        <form #form (submit)="$event.preventDefault(); submit(form)">
+          @if(challenge(); as otp){
+            <label for="signin-code">Verification code <span class="field-hint">Sent to {{otp.sentTo}}</span></label>
+            <div class="input-wrap"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><input id="signin-code" name="code" required pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter 6-digit code"></div>
+          } @else {
+            <label for="signin-user">Email or mobile number</label>
+            <div class="input-wrap"><i class="fa-regular fa-user" aria-hidden="true"></i><input id="signin-user" name="userId" autocomplete="username" maxlength="256" placeholder="Enter your email or mobile number" required></div>
+            <label for="signin-password">Password</label>
+            <div class="input-wrap"><i class="fa-solid fa-lock" aria-hidden="true"></i><input id="signin-password" name="password" type="password" autocomplete="current-password" maxlength="128" placeholder="Enter your password" required></div>
+            <label class="remember"><input name="remember" type="checkbox"> <span>Remember me</span></label>
+          }
+          @if(message()){<div class="notice" role="alert"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i><span>{{message()}}</span></div>}
+          <button class="submit-button" type="submit" [disabled]="busy()"><span>{{busy() ? 'Please wait…' : challenge() ? 'Verify code' : 'Sign in'}}</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          @if(challenge()){<button class="text-button back-button" type="button" [disabled]="busy()" (click)="challenge.set(null); message.set('')"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to sign in</button>}
+        </form>
+      </div>
+      <p class="form-footer"><i class="fa-solid fa-lock" aria-hidden="true"></i> Your campus workspace</p>
+    </div>
+  </section>
+</main>

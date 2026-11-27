@@ -1,7 +1,22 @@
-<div class="stats">@for(k of stats;track k[1]){<a [href]="moduleLink(k[5])" class="gst-card stat"><span class="gst-icon-box" [class]="'gst-tone-'+k[4]"><i [class]="'fa-solid fa-'+k[3]"></i></span><span><strong>{{k[0]}}</strong><small>{{k[1]}}</small></span><em>{{k[2]}}</em></a>}</div>
-<div class="widgets">@for(w of widgets;track w.title;let idx=$index){<article class="gst-card"><div class="gst-card-head"><h2 class="gst-card-title">{{w.title}}</h2><a class="gst-view-all" [href]="moduleLink(w.target)">Open</a></div>
+<div class="stats">
+<a [href]="registerLink" class="gst-card stat"><span class="gst-icon-box gst-tone-purple"><i class="fa-solid fa-clock"></i></span>
+  <span><strong>{{summary()?.percentage != null ? summary()!.percentage+'%' : '—'}}</strong><small>Attendance Today</small></span>
+  <em>@if(summary(); as a){{{a.absent}} absent}@else if(loading()){Loading…}@else{Unavailable}</em>
+</a>
+@for(k of stats;track k[1]){<a [href]="moduleLink(k[5])" class="gst-card stat"><span class="gst-icon-box" [class]="'gst-tone-'+k[4]"><i [class]="'fa-solid fa-'+k[3]"></i></span><span><strong>{{k[0]}}</strong><small>{{k[1]}}</small></span><em>{{k[2]}}</em></a>}</div>
+<div class="widgets">@for(w of widgets;track w.title;let idx=$index){<article class="gst-card"><div class="gst-card-head"><h2 class="gst-card-title">{{w.title}}</h2><a class="gst-view-all" [href]="w.title === 'Daily Attendance' ? registerLink : moduleLink(w.target)">Open</a></div>
 @if(idx===1){<div class="ministats"><b>17 <small>Outside</small></b><b>7 <small>No permit</small></b><b>3 <small>Overdue</small></b><b>2 <small>Returned</small></b></div>}
+@if(w.title === 'Daily Attendance'){
+  @if(error()){<p role="alert">{{error()}}</p><button class="btn btn-outline-secondary" [disabled]="loading()" (click)="loadAttendance()">Retry</button>}
+  @else if(summary(); as a){
+    <small>Student attendance · <time [attr.datetime]="a.day">{{a.day}}</time></small>
+    @if(a.marked){
+      <div class="chart-layout"><div class="chart-summary"><div class="chart-ring" [style.background]="attendanceChart().fill"><strong>{{a.marked}}</strong></div><span>Students marked</span></div>
+      <div class="legend">@for(row of a.breakdown;track row.code;let i=$index){<div class="metric"><i class="chart-key" aria-hidden="true" [style.background]="attendanceChart().colors[i]"></i><span>{{row.meaning}} ({{row.code}})</span><b>{{row.count}}</b></div>}</div></div>
+    }@else{<p>No student attendance marked today.</p>}
+  }@else{<p role="status">Loading student attendance…</p>}
+}@else{
 <div [class.chart-layout]="w.chart">
 @if(w.chart; as chart){<div class="chart-summary"><div class="chart-ring" [style.background]="chart.fill"><strong>{{chart.total}}</strong></div><span>{{chart.caption}}</span></div>}
-<div class="legend">@for(label of w.labels;track label;let i=$index){<div class="metric">@if(w.chart; as chart){<i class="chart-key" aria-hidden="true" [style.background]="chart.colors[i]"></i>}<span>{{label}}</span>@if(idx>2){<div class="track"><i [style.width.%]="100*w.values[i]/(idx===3?100:w.values[0])" [style.background]="w.color"></i></div>}<b>{{idx===1?['10:45','14:03','14:01','15:41'][i]:w.values[i]}}{{idx===3?'%':''}}</b></div>}</div></div></article>}</div>
+<div class="legend">@for(label of w.labels;track label;let i=$index){<div class="metric">@if(w.chart; as chart){<i class="chart-key" aria-hidden="true" [style.background]="chart.colors[i]"></i>}<span>{{label}}</span>@if(idx>2){<div class="track"><i [style.width.%]="100*w.values[i]/(idx===3?100:w.values[0])" [style.background]="w.color"></i></div>}<b>{{idx===1?['10:45','14:03','14:01','15:41'][i]:w.values[i]}}{{idx===3?'%':''}}</b></div>}</div></div>}</article>}</div>
 

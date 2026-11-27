@@ -19,9 +19,15 @@ function drawQr(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,size:nu
   ctx.fillStyle='#fff';ctx.fillRect(x,y,size,size);ctx.fillStyle='#151515';
   for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(qr.isDark(r,c))ctx.fillRect(x+(c+4)*u,y+(r+4)*u,u+.12,u+.12);
 }
-// Code 39 patterns used by the campus STU-nnnnn identifiers, including start/stop.
-const bars:Record<string,number>={'0':0x034,'1':0x121,'2':0x061,'3':0x160,'4':0x031,'5':0x130,'6':0x070,'7':0x025,'8':0x124,'9':0x064,S:0x046,T:0x016,U:0x181,'-':0x085,'*':0x094};
+const alphabet='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%';
+const patterns=[0x034,0x121,0x061,0x160,0x031,0x130,0x070,0x025,0x124,0x064,
+  0x109,0x049,0x148,0x019,0x118,0x058,0x00d,0x10c,0x04c,0x01c,0x103,0x043,0x142,
+  0x013,0x112,0x052,0x007,0x106,0x046,0x016,0x181,0x0c1,0x1c0,0x091,0x190,0x0d0,
+  0x085,0x184,0x0c4,0x0a8,0x0a2,0x08a,0x02a];
+const bars:Record<string,number>=Object.fromEntries(Array.from(alphabet,(c,i)=>[c,patterns[i]]));
+bars['*']=0x094;
 function barcode(ctx:CanvasRenderingContext2D,id:string,x:number,y:number,width:number,height:number){
+  if(!Array.from(id).every(c=>alphabet.includes(c)))return;
   const chars=('*'+id+'*').split('');
   const unit=width/(chars.length*16-1);
   ctx.fillStyle='#111';

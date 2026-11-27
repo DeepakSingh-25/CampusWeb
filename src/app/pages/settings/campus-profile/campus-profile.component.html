@@ -1,11 +1,29 @@
-<form class="gst-card profile" (ngSubmit)="saveProfile()">
-  @for(f of fields;track f){
-    <label [class.profile-address]="f==='Registered Address'">{{f}}
-      <input class="form-control" [name]="f" [(ngModel)]="profile[f]" (ngModelChange)="saved=false" required>
-    </label>
-  }
-  <footer class="profile-actions">
-    @if(saved){<span role="status">Saved on this device</span>}
-    <button type="submit" class="btn btn-primary">Save changes</button>
-  </footer>
-</form>
+@if (draft(); as profile) {
+  <form class="gst-card profile" #form="ngForm" (ngSubmit)="form.valid && saveProfile()" (input)="saved.set(false)" (change)="saved.set(false)">
+    @for (field of fields; track field.key) {
+      <label [class.profile-address]="field.key==='registeredAddress'">{{field.label}}
+        @if (field.key==='financialYearStart') {
+          <select class="form-control" [name]="field.key" [(ngModel)]="profile.financialYearStart" [disabled]="busy() || session.user()?.role !== 'Owner / Admin'" required>
+            @for (month of months; track month) {<option [value]="month">{{month}}</option>}
+          </select>
+        } @else {
+          <input class="form-control" [name]="field.key" [type]="field.key==='email' ? 'email' : 'text'"
+            [email]="field.key==='email'" [maxlength]="field.max"
+            [readonly]="busy() || session.user()?.role !== 'Owner / Admin' || field.key==='gstin' || field.key==='pan'"
+            [(ngModel)]="profile[field.key]" required>
+        }
+      </label>
+    }
+    <footer class="profile-actions">
+      @if (error()) {<span role="alert">{{error()}}</span>}
+      @if (saved()) {<span role="status">Campus profile saved.</span>}
+      @if (session.user()?.role === 'Owner / Admin') {
+        <button type="submit" class="btn btn-primary" [disabled]="busy() || form.invalid">{{busy() ? 'Saving…' : 'Save changes'}}</button>
+      }
+    </footer>
+  </form>
+} @else if (error()) {
+  <div class="gst-card"><p role="alert">{{error()}}</p><button type="button" class="btn btn-primary" (click)="load()">Retry</button></div>
+} @else {
+  <p role="status">Loading campus profile…</p>
+}

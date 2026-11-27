@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CampusSession } from '../../account/campus-session';
+
 import { Pagination, PageWindow } from '../../../shared/pagination/pagination.component';
 import { IdPreview } from '../students/id-preview/id-preview.component';
 import { CardHolder } from '../students/id-preview/card-artwork';
@@ -22,12 +24,14 @@ export class StaffDirectory implements OnInit {
   ngOnInit(){
     this.staff=this.people.map(person=>({...person}));
     this.departments=this.options('department');
+    this.grid = this.session.user()?.directoryView !== 'List';
     if(!this.isFaculty){
       this.groups=['Total',...new Set(this.staff.map(person=>person.status)),'On Notice'];
-      try {this.grid=JSON.parse(localStorage.getItem('campustrack.setup.User Directory')||'{}')['Default view']!=='List';} catch {}
+
     }
   }
-  campus=JSON.parse(localStorage.getItem('campus.profile') || '{}')['Campus Name'] || 'National Law University, Jodhpur';
+  private readonly session = inject(CampusSession);
+  get campus() { return this.session.user()?.companyName || 'CampusTrack'; }
   groups=['Total','Newly joined','Active','Probation','On Notice','Relieved'];
   group='Total';department='';query='';grid=true;advanced=false;
   filters=[

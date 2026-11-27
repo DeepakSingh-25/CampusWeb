@@ -1,3 +1,7 @@
+@if(loading()){<p role="status">Loading students…</p>}
+@else if(error()){<p role="alert">{{error()}}</p><button class="action" (click)="load()">Retry</button>}
+@else{
+@if(notice()){<p role="status">{{notice()}}</p>}
 <div class="student-filters">
   <div class="summary" role="group" aria-label="Student groups">@for(g of groups;track g){<button [attr.data-group]="g" [attr.aria-pressed]="group===g" (click)="group=g;paging.page=1">{{g}} <b>{{count(g)}}</b></button>}</div>
 </div>
@@ -6,25 +10,25 @@
   <label class="search"><i class="fa-solid fa-magnifying-glass"></i><input class="form-control" type="search" aria-label="Search students" placeholder="Search name, admission no., class or section…" [(ngModel)]="query" (ngModelChange)="paging.page=1"></label>
 <div class="view-toggle" role="group" aria-label="Record layout"><button aria-label="Grid view" title="Grid view" [attr.aria-pressed]="grid" (click)="grid=true"><i class="fa-solid fa-table-cells-large"></i></button><button aria-label="List view" title="List view" [attr.aria-pressed]="!grid" (click)="grid=false"><i class="fa-solid fa-list"></i></button></div>
 <button class="action" [attr.aria-expanded]="advanced" (click)="advanced=!advanced"><i class="fa-solid fa-filter"></i> Filters</button>
-<button class="action gold" [disabled]="!checked.size && !rows.length" (click)="open('ID cards',modal)"><i class="fa-solid fa-id-card"></i> ID cards @if(checked.size){({{checked.size}})}</button>
+@if(admin){<button class="action" (click)="admit(modal)">Add student</button>} <button class="action gold" [disabled]="!checked.size && !rows.length" (click)="open('ID cards',modal)"><i class="fa-solid fa-id-card"></i> ID cards @if(checked.size){({{checked.size}})}</button>
 </div>
 @if(advanced){<div class="record-toolbar extra"><label>Residence <select [(ngModel)]="residence" (ngModelChange)="paging.page=1"><option value="">All residences</option>@for(r of residences;track r){<option>{{r}}</option>}</select></label><label>Fees <select [(ngModel)]="fee" (ngModelChange)="paging.page=1"><option value="">All fees</option>@for(f of fees;track f){<option>{{f}}</option>}</select></label><button class="action" (click)="reset()">Clear filters</button></div>}
-@if(!rows.length){<div class="gst-card">No matching students. <button class="action" (click)="reset()">Clear filters</button></div>}
+@if(!rows.length){<div class="gst-card">@if(!data().length){No students have been added to this campus.}@else{No matching students. <button class="action" (click)="reset()">Clear filters</button>}</div>}
 @else if(grid){<div class="student-grid">@for(s of paging.slice(rows);track s.id){<article class="student-card">
-<header><input type="checkbox" [attr.aria-label]="'Select '+s.name" [checked]="checked.has(s.id)" (change)="toggle(s.id)"><span class="portrait" [attr.data-photo]="s.photo">{{s.photo?'':initials(s.name)}}</span><div class="identity"><h2>{{s.name}}</h2><small>Sem {{s.semester}} · Sec {{s.section}}</small></div><span class="status" [class.other]="s.status!=='On Roll'">{{s.status}}</span></header>
+<header><input type="checkbox" [attr.aria-label]="'Select '+s.name" [checked]="checked.has(s.id)" (change)="toggle(s.id)"><span class="portrait" >{{initials(s.name)}}</span><div class="identity"><h2>{{s.name}}</h2><small>Sem {{s.semester}} · Sec {{s.section}}</small></div><span class="status" [class.other]="s.status!=='On Roll'">{{s.status}}</span></header>
 <div class="academic"><span><i class="fa-solid fa-graduation-cap"></i>{{s.programme}}</span><code>{{s.id}}</code></div>
 <p><i class="fa-regular fa-calendar"></i> Admitted <strong>{{s.admitted.split('-').reverse().join('-')}}</strong></p>
 <p><span class="fee-tag" [class.unpaid]="s.fees!=='Paid'">{{s.fees==='Paid'?'Fees paid':s.fees}}</span><span><i class="fa-solid fa-location-dot"></i>{{s.residence}}</span></p>
 <p><i class="fa-solid fa-user-tie"></i><strong>{{s.mentor}}</strong></p>
 <div class="tags"><span><i class="fa-solid fa-droplet"></i> {{s.blood}}</span><span>Section {{s.section}}</span></div>
-<footer><div class="actions"><button (click)="open('Profile',modal,s)"><i class="fa-regular fa-eye"></i> Profile</button><button (click)="open('Edit',modal,s)"><i class="fa-solid fa-pen"></i> Edit</button><button class="gold" (click)="open('ID cards',modal,s)"><i class="fa-regular fa-id-card"></i> ID Card</button></div>
-<div class="actions transitions"><button [disabled]="s.status!=='On Roll'" (click)="open('On Long Leave',modal,s)">Grant long leave</button><button [disabled]="s.status==='Passed Out' || s.status==='TC Issued'" (click)="open('Passed Out',modal,s)">Mark passed out</button><button [disabled]="s.status==='TC Issued'" (click)="open('TC Issued',modal,s)">Issue TC</button></div></footer></article>}</div>}
+<footer><div class="actions"><button (click)="open('Profile',modal,s)"><i class="fa-regular fa-eye"></i> Profile</button>@if(admin){<button (click)="open('Edit',modal,s)"><i class="fa-solid fa-pen"></i> Edit</button>}<button class="gold" (click)="open('ID cards',modal,s)"><i class="fa-regular fa-id-card"></i> ID Card</button></div>
+@if(admin){<div class="actions transitions"><button [disabled]="s.status!=='On Roll'" (click)="open('On Long Leave',modal,s)">Grant long leave</button><button [disabled]="s.status==='Passed Out' || s.status==='TC Issued'" (click)="open('Passed Out',modal,s)">Mark passed out</button><button [disabled]="s.status==='TC Issued'" (click)="open('TC Issued',modal,s)">Issue TC</button></div>}</footer></article>}</div>}
 @else{<div class="campus-list table-scroll"><table aria-label="Student directory"><thead><tr>
   <th><input type="checkbox" aria-label="Select students on this page" [checked]="pageChecked" [indeterminate]="pageMixed" (change)="togglePage()"></th>
   @for(col of ['Student','Programme','Class / Section','Admitted on','Blood','Residence','Fees','Status','ID Card'];track col){<th scope="col">{{col}}</th>}
 </tr></thead><tbody>@for(s of visibleStudents;track s.id){<tr [class.picked]="checked.has(s.id)">
   <td><input type="checkbox" [attr.aria-label]="'Select '+s.name" [checked]="checked.has(s.id)" (change)="toggle(s.id)"></td>
-  <th scope="row"><button class="list-identity" (click)="open('Profile',modal,s)"><span class="portrait" [attr.data-photo]="s.photo">{{s.photo?'':initials(s.name)}}</span><span><strong>{{s.name}}</strong><small>{{s.id}}</small></span></button></th>
+  <th scope="row"><button class="list-identity" (click)="open('Profile',modal,s)"><span class="portrait" >{{initials(s.name)}}</span><span><strong>{{s.name}}</strong><small>{{s.id}}</small></span></button></th>
   <td>{{s.programme}}</td><td>Sem {{s.semester}} · Sec {{s.section}}</td><td>{{s.admitted.split('-').reverse().join('-')}}</td>
   <td><span class="list-tag blood"><i class="fa-solid fa-droplet"></i> {{s.blood}}</span></td>
   <td><span class="list-tag"><i class="fa-solid" [class]="s.residence==='Day Scholar'?'fa-person-walking':'fa-bed'"></i> {{s.residence}}</span></td>
@@ -32,9 +36,31 @@
   <td><button class="list-action" [attr.aria-label]="'ID card for '+s.name" (click)="open('ID cards',modal,s)"><i class="fa-regular fa-id-card"></i></button> <button class="list-action more" [attr.aria-label]="'Profile of '+s.name" (click)="open('Profile',modal,s)"><i class="fa-solid fa-angle-right"></i></button></td>
 </tr>}</tbody></table></div>}
 <campus-pagination [total]="rows.length" noun="students" [(window)]="paging"></campus-pagination>
-<dialog #modal [class.id-workspace]="mode==='ID cards'" (close)="mode=''" aria-labelledby="student-dialog"><header>@if(mode==='ID cards'){<span class="id-icon"><i class="fa-solid fa-id-card"></i></span>}<div><h2 class="gst-card-title" id="student-dialog">{{mode==='ID cards'?'ID Card':mode==='Edit'?'Edit student':current?.name}}</h2>@if(mode==='ID cards'){<small>{{cards.length===1?cards[0].name+' · '+cards[0].id:cards.length+' students'}} — live preview before printing</small>}</div><button aria-label="Close" (click)="modal.close()">×</button></header>
+}
+<dialog #modal (cancel)="saving() && $event.preventDefault()" [class.id-workspace]="mode==='ID cards'" (close)="mode=''" aria-labelledby="student-dialog"><header>@if(mode==='ID cards'){<span class="id-icon"><i class="fa-solid fa-id-card"></i></span>}<div><h2 class="gst-card-title" id="student-dialog">{{mode==='ID cards'?'ID Card':mode==='Add'?'Add student':mode==='Edit'?'Edit student':current?.name}}</h2>@if(mode==='ID cards'){<small>{{cards.length===1?cards[0].name+' · '+cards[0].id:cards.length+' students'}} — live preview before printing</small>}</div><button [disabled]="saving()" aria-label="Close" (click)="modal.close()">×</button></header>
 @if(mode==='ID cards'){<campus-id-preview [cards]="cards" [campus]="campus"></campus-id-preview>}
-@else if(mode==='Edit' && draft){<form (ngSubmit)="save(modal)"><label>Student name<input class="form-control" name="name" required [(ngModel)]="draft.name"></label><label>Residence<select class="form-select" name="residence" [(ngModel)]="draft.residence">@for(r of residences;track r){<option>{{r}}</option>}</select></label><label>Fees<select class="form-select" name="fees" [(ngModel)]="draft.fees">@for(f of fees;track f){<option>{{f}}</option>}</select></label><button class="action gold" [disabled]="!draft.name.trim()">Save changes</button></form>}
-@else if(current && mode==='Profile'){<dl><div><dt>Student ID</dt><dd>{{current.id}}</dd></div><div><dt>Programme</dt><dd>{{current.programme}}</dd></div><div><dt>Class</dt><dd>Semester {{current.semester}} · Section {{current.section}}</dd></div><div><dt>Mentor</dt><dd>{{current.mentor}}</dd></div><div><dt>Residence</dt><dd>{{current.residence}}</dd></div><div><dt>Status</dt><dd>{{current.status}}</dd></div></dl>}
-@else{<p>Change this student's status to <strong>{{mode}}</strong>?</p><button class="action" (click)="modal.close()">Cancel</button> <button class="action gold" (click)="save(modal)">Confirm</button>}
+@else if((mode==='Add' || mode==='Edit') && draft){
+<form #form="ngForm" (ngSubmit)="form.valid && save(modal)">
+<fieldset [disabled]="saving()">
+<label>Student name<input class="form-control" name="name" required maxlength="150" [(ngModel)]="draft.name"></label>
+@if(mode==='Add'){
+  @if(setup(); as settings){
+    <label>Admission number ({{settings.directory.studentIdPrefix}}-…)<input class="form-control" name="suffix" placeholder="Number after prefix" required pattern="[A-Za-z0-9][A-Za-z0-9\-]{0,31}" maxlength="32" [(ngModel)]="suffix"></label>
+    <label>Programme<select class="form-select" name="programme" required [(ngModel)]="draft.programme" (ngModelChange)="draft.section=''"><option value="">Select programme</option>@for(p of choices('programmes');track p){<option>{{p}}</option>}</select></label>
+    <label>Section<select class="form-select" name="section" required [(ngModel)]="draft.section"><option value="">Select section</option>@for(s of sections;track s){<option>{{s}}</option>}</select></label>
+    <label>Semester<input class="form-control" type="number" name="semester" required min="1" step="1" [(ngModel)]="draft.semester"></label>
+    <label>Admission date<input class="form-control" type="date" name="admitted" required [(ngModel)]="draft.admitted"></label>
+    <label>Blood group<select class="form-select" name="blood" [(ngModel)]="draft.blood"><option value="">Unknown</option>@for(b of choices('blood-groups');track b){<option>{{b}}</option>}</select></label>
+    <label>Mentor<input class="form-control" name="mentor" maxlength="150" [(ngModel)]="draft.mentor"></label>
+    <label>Status<select class="form-select" name="status" [(ngModel)]="draft.status"><option>On Roll</option><option>Provisional</option></select></label>
+  }@else if(saveError()){<button type="button" (click)="loadChoices()">Retry setup</button>}@else{<p role="status">Loading admission options…</p>}
+}
+<label>Residence<input class="form-control" name="residence" required maxlength="120" [(ngModel)]="draft.residence" list="residence-options"></label>
+<datalist id="residence-options"><option value="Day Scholar"></option>@for(r of residences;track r){<option [value]="r"></option>}</datalist>
+<label>Fees<select class="form-select" name="fees" [(ngModel)]="draft.fees">@for(f of fees;track f){<option>{{f}}</option>}</select></label>
+</fieldset><button class="action gold" [disabled]="saving() || form.invalid || (mode==='Add' && !setup())">{{saving()?'Saving…':'Save student'}}</button></form>}
+@else if(current && mode==='Profile'){<dl><div><dt>Student ID</dt><dd>{{current.id}}</dd></div><div><dt>Programme</dt><dd>{{current.programme}}</dd></div><div><dt>Class</dt><dd>Semester {{current.semester}} · Section {{current.section}}</dd></div><div><dt>Mentor</dt><dd>{{current.mentor}}</dd></div><div><dt>Residence</dt><dd>{{current.residence}}</dd></div><div><dt>Status</dt><dd>{{current.status}}</dd></div></dl>
+@if(admin){<div class="actions"><button (click)="open('Edit',modal,current)">Edit</button><button [disabled]="current.status!=='On Roll'" (click)="open('On Long Leave',modal,current)">Grant long leave</button><button [disabled]="current.status==='Passed Out' || current.status==='TC Issued'" (click)="open('Passed Out',modal,current)">Mark passed out</button><button [disabled]="current.status==='TC Issued'" (click)="open('TC Issued',modal,current)">Issue TC</button></div>}}
+@else{<p>Change this student's status to <strong>{{mode}}</strong>?</p><button class="action" [disabled]="saving()" (click)="modal.close()">Cancel</button> <button class="action gold" [disabled]="saving()" (click)="save(modal)">Confirm</button>}
+@if(saveError()){<p role="alert">{{saveError()}}</p>}
 </dialog>

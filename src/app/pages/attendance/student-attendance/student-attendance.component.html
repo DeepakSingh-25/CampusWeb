@@ -1,12 +1,31 @@
-<div class="filters"><select aria-label="Department" [(ngModel)]="department" (ngModelChange)="paging.page=1"><option value="">All Departments</option>@for(d of departments;track d){<option>{{d}}</option>}</select>
+@if(loading()){<p role="status">Loading attendance register…</p>}
+@else if(error()){<p role="alert">{{error()}}</p><button class="btn btn-primary" (click)="load()">Retry</button>}
+@else if(data(); as register){
+<div class="filters"><select aria-label="Programme" [(ngModel)]="programme" (ngModelChange)="paging.page=1"><option value="">All programmes</option>@for(p of programmes();track p){<option>{{p}}</option>}</select>
 <input type="search" placeholder="Search student…" aria-label="Search student" [(ngModel)]="query" (ngModelChange)="paging.page=1">
 @for(s of stats;track s[1];let i=$index){<div class="stat"><i class="fa-solid fa-{{['users','circle-check','user-xmark','plane','user-check','clock'][i]}}"></i><div><b>{{s[0]}}</b><small>{{s[1]}}</small></div></div>}</div>
-<div class="modes"><small>Capture modes</small>@for(m of modes;track m;let i=$index){<span><i class="fa-solid fa-{{['fingerprint','id-card','qrcode','pen'][i]}}"></i> {{m}}</span>}<span class="disabled">Mobile App · Employees only</span><aside>◷ Working day 09:00 – 15:45 · 10 min grace</aside></div>
-<section class="register"><header><strong><i class="fa-solid fa-calendar-days"></i> Attendance Register</strong><button aria-label="Previous month" (click)="move(-1)">‹</button><b>{{title}}</b><button aria-label="Next month" [disabled]="current" (click)="move(1)">›</button>
-<div class="legend">@for(c of legend;track c[0]){<span class="mark" [attr.data-mark]="c[0]" [title]="c[1]">{{c[0]}}</span>}</div>
-<button (click)="exportCsv()">Export</button><button class="lock" [disabled]="current||locked" (click)="lock()"><i class="fa-solid fa-lock"></i> {{locked?'Month locked':'Lock Month'}}</button></header>
-<div class="matrix" tabindex="0" aria-label="Scrollable attendance register"><table><thead><tr><th>Student</th>@for(d of days;track d.n){<th [class.today]="d.today" [class.weekend]="d.weekend" [class.end]="d.end">{{d.n}}<small>{{d.label}}</small></th>}<th>P</th><th>A</th></tr></thead>
-<tbody>@for(r of paging.slice(rows);track r.id){<tr><th scope="row"><div class="identity"><span [style.background]="['#009bce','#8043cd','#008d99','#189954','#c07808'][r.index%5]">{{r.initials}}</span><div>{{r.name}}<small>{{r.programme}} · Sec {{r.section}} · Sem {{r.semester}} · {{r.department}}</small></div></div></th>
-@for(c of r.marks;track $index){<td [class.today]="days[$index].today" [class.weekend]="days[$index].weekend" [class.end]="days[$index].end">@if(c){<span class="mark" [attr.data-mark]="c">{{c}}</span>}@else{—}</td>}<td class="present">{{r.present}}</td><td class="absent">{{r.absent}}</td></tr>}
-@empty{<tr><td [attr.colspan]="days.length+3">No matching students.</td></tr>}</tbody></table></div>
+<div class="modes"><span>Manual entry</span>@if(session.user()?.attendance; as day){<aside>Working day {{day.workingDayStart}} – {{day.workingDayEnd}} · {{day.graceMinutes}} min grace</aside>}</div>
+@if(notice()){<p role="status">{{notice()}}</p>}
+<section class="register"><header><strong><i class="fa-solid fa-calendar-days"></i> Attendance Register</strong>
+<button aria-label="Previous month" (click)="move(-1)">‹</button><b>{{title}}</b><button aria-label="Next month" [disabled]="current" (click)="move(1)">›</button>
+<div class="legend">@for(c of register.codes;track c.code){<span class="mark" [attr.data-mark]="c.code" [title]="c.meaning">{{c.code}}</span>}</div>
+<button (click)="exportCsv()">Export</button>
+@if(register.locked){<span>Month locked</span>}@else if(admin && !current){<button class="lock" (click)="confirmLock(editor)">Lock month</button>}</header>
+<div class="matrix" tabindex="0" aria-label="Scrollable attendance register"><table><thead><tr><th>Student</th>@for(d of days();track d.day){<th [class.today]="d.today" [class.weekend]="d.weekend" [class.end]="d.end">{{d.n}}<small>{{d.label}}</small></th>}<th>P</th><th>A</th></tr></thead>
+<tbody>@for(r of paging.slice(rows);track r.key){<tr><th scope="row"><div class="identity"><span [style.background]="['#009bce','#8043cd','#008d99','#189954','#c07808'][r.index%5]">{{r.initials}}</span><div>{{r.name}}<small>{{r.id}} · {{r.programme}} · Sec {{r.section}} · Sem {{r.semester}}</small></div></div></th>
+@for(d of days();track d.day;let i=$index){<td [class.today]="d.today" [class.weekend]="d.weekend" [class.end]="d.end">
+@if(admin && !register.locked && !d.future && d.day>=r.admitted){
+<button class="day-entry" [attr.aria-label]="'Mark '+r.name+' on '+d.day" (click)="edit(editor,r,d.day,r.marks[i]?.code || '')"><span [class.mark]="r.marks[i]" [attr.data-mark]="r.marks[i]?.code">{{r.marks[i]?.code || '—'}}</span></button>
+}@else if(r.marks[i];as c){<span class="mark" [attr.data-mark]="c.code">{{c.code}}</span>}@else{—}</td>}
+<td class="present">{{r.present}}</td><td class="absent">{{r.absent}}</td></tr>}
+@empty{<tr><td [attr.colspan]="days().length+3">{{register.students.length?'No matching students.':'No students admitted for this month.'}}</td></tr>}</tbody></table></div>
 <campus-pagination [total]="rows.length" noun="students" [(window)]="paging"></campus-pagination></section>
+<dialog #editor (cancel)="busy() && $event.preventDefault()" aria-labelledby="attendance-action">
+<form (ngSubmit)="save(editor)">
+@if(selected;as cell){<h2 id="attendance-action">{{cell.student.name}}</h2><label>Attendance for {{cell.day}}
+<select class="form-select" name="code" [(ngModel)]="code" required><option value="">Select code</option>@for(c of register.codes;track c.code){<option [value]="c.code">{{c.code}} · {{c.meaning}}</option>}</select></label>}
+@else{<h2 id="attendance-action">Lock {{title}}?</h2><p>Locking closes this month to further attendance changes.</p>}
+@if(saveError()){<p role="alert">{{saveError()}}</p><button type="button" (click)="reload(editor)">Reload register</button>}
+<footer><button type="button" [disabled]="busy()" (click)="editor.close()">Cancel</button><button class="btn btn-primary" [disabled]="busy() || (!!selected && !code)">{{selected?'Save attendance':'Lock month'}}</button></footer>
+</form></dialog>
+}

@@ -49,7 +49,6 @@ export const cards: Record<string,string[][]> = {
   ]
 };
 export const stats = [
-  ['86.9%','Attendance Today','10 absent','clock','purple','Attendance'],
   ['17','Students Outside','7 unauthorised','moon','cyan','Night Out'],
   ['24%','Hostel Occupancy','194 beds free','building','warning','Hostel'],
   ['27','Pending Leave','19 overdue','calendar-days','danger','Leave']
@@ -57,10 +56,9 @@ export const stats = [
 export const widgets = [
  {title:'Needs Attention',target:'Leave',labels:['Leave approvals','Hostel complaints','Absent today','Overdue books','Outside without permission','Overdue returns','Claims to review','Devices offline'],values:[27,12,10,8,7,3,3,1],color:'#ec486a'},
  {title:'Students Outside Now',target:'Night Out',labels:['Diya Singh','Ishaan Bose','Meher Naidu','Navya Rao'],values:[],color:'#00a4b6'},
- {title:'Daily Attendance',target:'Attendance',labels:['On Time','Absent','Late','Half Day','Leave','On Duty','Remote','Week Off','Holiday'],values:[174,10,9,6,17,10,3,0,0],color:'#179f62'},
+ {title:'Daily Attendance',target:'Attendance',labels:[],values:[],color:'#179f62'},
  {title:'Hostel Occupancy',target:'Hostel',labels:['Vindhya Girls Hostel','Nilgiri Boys Hostel','Shivalik Girls Hostel','Aravali Boys Hostel'],values:[56,25,23,14],color:'#8553de'},
  {title:'Leave Queue',target:'Leave',labels:['Employees','Faculty','Students'],values:[11,10,6],color:'#eb881b'},
  {title:'Library Circulation',target:'Library',labels:['Computer Science','Mathematics','Competitive Exams','Mechanical','Physics','Electronics'],values:[12,3,3,3,2,2],color:'#1396b5'}
 ];
-export const profileDefaults = {'Campus Name':'National Law University, Jodhpur','Legal Entity Name':'National Law University, Jodhpur','GSTIN':'08AAAJN0195M1ZT','PAN':'AAAJN0195M','Contact Email':'nlu-jod-rj@nic.in','Phone':'+91-291-2577530, 2577526','Financial Year Start':'April','Default Currency':'INR (Rs.)','Registered Address':'NH-62, Nagour Road, Mandore, Jodhpur – 342304 (Raj.) – INDIA'};
 

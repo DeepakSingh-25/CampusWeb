@@ -1,4 +1,5 @@
-@if(signedOut){<campus-signed-out></campus-signed-out>} @else {
+@if(session.checking()){<main class="account-card signed-out" role="status">Checking your session…</main>}
+@else if(session.user(); as user){
 <div class="dashboard">
 <aside class="sidebar" [class.active]="collapsed && !mobile" [class.sidebar-open]="mobile">
   <a [href]="link(modules[0])" class="sidebar-logo gst-logo" aria-label="CampusTrack dashboard"><span class="gst-logo-badge"><i class="fa-solid fa-graduation-cap"></i></span><span class="gst-logo-text text-tab"><strong>CampusTrack</strong><small>Office-Manager</small></span></a>
@@ -27,32 +28,33 @@
 </aside>
 @if(mobile){<button class="veil" aria-label="Close menu" (click)="mobile=false"></button>}
 <main class="dashboard-main" [class.active]="collapsed && !mobile">
-<header class="navbar-header campus-header"><div class="campus-head"><button class="menu-button" aria-label="Toggle menu" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button><strong>{{profile['Campus Name']}}</strong><span class="head-spacer"></span><button class="theme-button" aria-label="Toggle light or dark theme" (click)="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+<header class="navbar-header campus-header"><div class="campus-head"><button class="menu-button" aria-label="Toggle menu" (click)="toggleMenu()"><i class="fa-solid fa-bars"></i></button><strong>{{user.companyName || 'CampusTrack'}}</strong><span class="head-spacer"></span><button class="theme-button" aria-label="Toggle light or dark theme" (click)="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
   <details class="account-menu" #account (keydown.escape)="account.open=false; accountTrigger.focus()" (focusout)="!account.contains($any($event.relatedTarget)) && (account.open=false)" (document:click)="dismissAccountOutside(account,$event.target)">
-    <summary #accountTrigger aria-label="Account menu"><span class="avatar">{{initials(accountName())}}</span><span class="user"><b>{{accountName()}}</b><small>Super Admin</small></span><i class="fa-solid fa-angle-down"></i></summary>
+    <summary #accountTrigger [attr.aria-label]="'Account menu for '+user.fullName+', '+user.role"><span class="avatar">{{initials(user.fullName)}}</span><span class="user"><b>{{user.fullName}}</b><small>{{user.role}}</small></span><i class="fa-solid fa-angle-down"></i></summary>
     <nav class="account-panel" aria-label="Account">
-      <header><span class="avatar">{{initials(accountName())}}</span><div><strong>{{accountName()}}</strong><small>{{accountEmail()}}</small></div></header>
+      <header><span class="avatar">{{initials(user.fullName)}}</span><div><strong>{{user.fullName}}</strong><small>{{user.email}}</small><small>{{user.role}}</small></div></header>
       @for(item of accountLinks;track item.slug){
         <a [href]="'#/account/'+item.slug" [attr.aria-current]="accountPage===item?'page':null" (click)="account.open=false;selectScreen($event,'#/account/'+item.slug)">
           <i class="fa-solid" [class]="'fa-'+item.icon"></i><span><b>{{item.name}}</b><small>{{item.hint}}</small></span>
         </a>
       }
-      <button type="button" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+      <button type="button" [disabled]="session.loggingOut()" (click)="session.logout()"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
     </nav>
   </details>
 </div></header>
 <div class="campus-body">
+@if(session.error()){<p role="alert">{{session.error()}}</p>}
 @if(!accountPage){<div class="page-title"><div><small>CampusTrack / {{current.name}}</small><h1>{{section || 'Dashboard'}}</h1></div></div>}
 @if(accountPage){
   <ng-container *ngComponentOutlet="accountPage.component"></ng-container>
 } @else if(current.name==='Dashboard'){
   <campus-dashboard [moduleLink]="moduleLink"></campus-dashboard>
 } @else if(current.name==='User Directory' && section==='Students'){
-  <campus-students [campus]="profile['Campus Name']"></campus-students>
+  <campus-students [campus]="user.companyName || 'CampusTrack'"></campus-students>
 } @else if(first && current.name==='Leave'){
   <campus-leave-calendar [view]="leaveView" [views]="leaveViews" [base]="link(current,section)"></campus-leave-calendar>
 } @else if(first && current.name==='Settings'){
-  <campus-settings-campus-profile [profile]="profile"></campus-settings-campus-profile>
+  <campus-settings-campus-profile></campus-settings-campus-profile>
 } @else if(first && current.name==='Hardware'){
   <campus-machine-console [tabs]="hardwareTabs" [tab]="tab"></campus-machine-console>
 } @else {

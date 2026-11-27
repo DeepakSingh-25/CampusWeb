@@ -1,0 +1,44 @@
+@if (loading()) {
+  <p role="status">Loading {{page().section.toLowerCase()}}…</p>
+} @else if (loadError()) {
+  <p role="alert">{{loadError()}}</p><button class="btn btn-primary" (click)="load()">Retry</button>
+} @else {
+  @if (admin()) {
+    @if (draft(); as item) {
+      <form class="gst-card profile mb-3" #form="ngForm" (ngSubmit)="form.valid && save()">
+        <h2 class="gst-card-title">{{item.id ? 'Edit' : 'Add'}} {{kind()}}</h2>
+        <label>{{page().fields[0]}} name<input class="form-control" name="name" required maxlength="120" [(ngModel)]="item.name"></label>
+        @if (kind() !== 'designation') {
+          <label>Code<input class="form-control" name="code" required maxlength="32" [(ngModel)]="item.code"></label>
+        }
+        @if (kind() !== 'branch') {
+          <label>{{kind() === 'department' ? 'Branch' : 'Department'}}
+            <select class="form-select" name="parent" required [(ngModel)]="item.parentId">
+              <option [ngValue]="null">Select {{kind() === 'department' ? 'branch' : 'department'}}</option>
+              @for (parent of parents(); track parent.id) {<option [value]="parent.id">{{parentLabel(parent)}}</option>}
+            </select>
+          </label>
+        }
+        @switch (kind()) {
+          @case ('branch') {<label>Location<input class="form-control" name="location" required maxlength="200" [(ngModel)]="item.location"></label>}
+          @case ('department') {<label>Department head<input class="form-control" name="head" maxlength="120" [(ngModel)]="item.head"></label>}
+          @case ('designation') {<label>Staff category<input class="form-control" name="category" required maxlength="80" [(ngModel)]="item.staffCategory"></label>}
+        }
+        @if (kind() !== 'department') {
+          <label>Status<select class="form-select" name="status" [(ngModel)]="item.isActive"><option [ngValue]="true">Active</option><option [ngValue]="false">Inactive</option></select></label>
+        }
+        <footer class="profile-actions">
+          @if (saveError()) {<span role="alert">{{saveError()}}</span>}
+          <button type="button" class="btn btn-outline-secondary" [disabled]="saving()" (click)="draft.set(null)">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving()">{{saving() ? 'Saving…' : 'Save'}}</button>
+        </footer>
+      </form>
+    } @else if (kind() === 'branch' || parents().length) {
+      <button class="btn btn-primary mb-3" (click)="edit()">Add {{kind()}}</button>
+    } @else if (kind() === 'department') {<p>First add a branch in <a href="#/settings/branches">Branches</a>.</p>}
+    @else {<p>First add a department in <a href="#/settings/departments">Departments</a>.</p>}
+  }
+  @if (notice()) {<p role="status">{{notice()}}</p>}
+  <campus-module-screen moduleName="Settings" [section]="page().section" icon="fa-solid fa-gear"
+    [records]="table()" [editable]="admin() && !draft()" (editRecord)="edit($event)" />
+}
