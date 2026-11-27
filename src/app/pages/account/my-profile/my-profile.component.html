@@ -1,18 +1,42 @@
+@if (user(); as person) {
 <section class="profile-wrap">
-<header class="panel identity"><div class="monogram">{{initials(accountName())}}</div>
-<div class="identity-main"><h1>{{accountName()}}</h1><div class="inline"><b class="badge gold">Super Admin</b> Campus Administrator · Campus Operations <span class="muted">{{campus}}</span></div>
-<div class="inline"><span class="badge green">✓ Email verified</span><span class="badge gold">⚠ Mobile not verified</span></div></div>
-<div class="login-stat"><small>Last login</small><strong>🟢 Active now</strong></div><div class="login-stat"><small>Last password change</small><strong>10 Aug 2026</strong></div></header>
-<nav class="tabs" aria-label="Profile sections">@for(t of tabs;track t;let i=$index){<button [attr.aria-pressed]="tab===t" (click)="tab=t;editing=false;message=''"><i class="fa-solid fa-{{icons[i]}}"></i>{{t}}</button>}</nav>
-<article class="panel info">@if(tab==='Profile'){
-<header class="inline"><div class="grow"><h2>Personal Information</h2><p class="muted">Your identity details across the workspace.</p></div><button (click)="editing=!editing">{{editing?'Cancel':'✉ Request Change'}}</button></header>
-@if(editing){<form (submit)="$event.preventDefault();save(name.value,email.value)"><label>Full name<input #name required maxlength="60" pattern=".*\S.*" [value]="accountName()"></label><label>Email address<input #email type="email" required [value]="accountEmail()"></label><button class="primary">Save changes</button></form>}
-@else{<dl>@for(f of fields;track f[0]){<div><dt>{{f[0]}}</dt><dd>{{f[1]}}</dd></div>}</dl>}
-@if(message){<p role="status">{{message}}</p>}
-}@else{<h2>{{tab}}</h2>
-@switch(tab){
-@case('Account & Verification'){<dl><div><dt>Email verified</dt><dd>{{accountEmail()}}</dd></div><div><dt>Mobile · verification pending</dt><dd>+91 98290 12345</dd></div></dl>}
-@case('Login History'){<div class="row-line">Current browser session <span class="badge green">Active now</span></div>}
-@case('Security & Sessions'){<div class="row-line">Current session <a href="#/account/change-password">Change password →</a></div>}
-@case('Notifications'){<label class="inline"><input type="checkbox" [checked]="alerts" (change)="toggleAlerts()"> Account notifications</label>}
-}}</article></section>
+  <header class="panel identity">
+    <div class="monogram">{{initials(person.fullName)}}</div>
+    <div class="identity-main">
+      <h1>{{person.fullName}}</h1>
+      <div class="inline"><b class="badge gold">{{person.role}}</b><span class="muted">{{person.companyName}}</span></div>
+    </div>
+    <div class="login-stat"><small>Last login</small><strong>{{(person.lastLoginOn | date:'medium') || '—'}}</strong></div>
+    <div class="login-stat"><small>Last password change</small><strong>{{(person.passwordChangedOn | date:'mediumDate') || '—'}}</strong></div>
+  </header>
+  <nav class="tabs" aria-label="Profile sections">
+    @for(t of tabs;track t;let i=$index){
+      <button [attr.aria-pressed]="tab===t" (click)="tab=t"><i class="fa-solid fa-{{icons[i]}}"></i>{{t}}</button>
+    }
+  </nav>
+  <article class="panel info">
+    <h2>{{tab === 'Profile' ? 'Personal Information' : tab}}</h2>
+    @switch(tab){
+      @case('Profile'){
+        <dl>
+          <div><dt>Full name</dt><dd>{{person.fullName}}</dd></div>
+          <div><dt>Role</dt><dd>{{person.role}}</dd></div>
+          <div><dt>Organization / Company</dt><dd>{{person.companyName || '—'}}</dd></div>
+          <div><dt>Email address</dt><dd>{{person.email}}</dd></div>
+          <div><dt>Mobile number</dt><dd>{{person.mobileNo || '—'}}</dd></div>
+        </dl>
+      }
+      @case('Account & Verification'){
+        <dl>
+          <div><dt>Email address</dt><dd>{{person.email}}</dd></div>
+          <div><dt>Email verification</dt><dd>{{person.emailVerified ? 'Verified' : 'Pending'}}</dd></div>
+          <div><dt>Mobile number</dt><dd>{{person.mobileNo || '—'}}</dd></div>
+        </dl>
+      }
+      @case('Login History'){<div class="row-line">Last sign-in <span>{{(person.lastLoginOn | date:'medium') || '—'}}</span></div>}
+      @case('Security & Sessions'){<div class="row-line">Current session <a href="#/account/change-password">Change password →</a></div>}
+      @case('Notifications'){<label class="inline"><input type="checkbox" [checked]="alerts" (change)="toggleAlerts()"> Account notifications</label>}
+    }
+  </article>
+</section>
+}

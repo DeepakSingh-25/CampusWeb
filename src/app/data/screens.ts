@@ -3,15 +3,12 @@ export type { Screen } from './screen-model';
 import { records as UserDirectoryFacultyData } from '../pages/user-directory/faculty/faculty.data';
 import { records as UserDirectoryEmployeesData } from '../pages/user-directory/employees/employees.data';
 import { records as UserDirectoryContractualStaffData } from '../pages/user-directory/contractual-staff/contractual-staff.data';
-import { defaults as UserDirectorySetupData } from '../pages/user-directory/setup/setup.data';
 import { records as AttendanceSubjectWiseData } from '../pages/attendance/subject-wise/subject-wise.data';
 import { records as AttendanceClassWiseRegisterData } from '../pages/attendance/class-wise-register/class-wise-register.data';
 import { records as AttendancePeriodWiseData } from '../pages/attendance/period-wise/period-wise.data';
 import { records as AttendanceAttendanceRegularizationData } from '../pages/attendance/attendance-regularization/attendance-regularization.data';
 import { records as AttendanceShiftManagementData } from '../pages/attendance/shift-management/shift-management.data';
 import { records as AttendanceRosterManagementData } from '../pages/attendance/roster-management/roster-management.data';
-import { records as AttendanceAttendanceCodeData } from '../pages/attendance/attendance-code/attendance-code.data';
-import { defaults as AttendanceSetupData } from '../pages/attendance/setup/setup.data';
 import { sources as AttendanceReportsData } from '../pages/attendance/reports/reports.data';
 import { records as LeaveHolidaySetupData } from '../pages/leave/holiday-setup/holiday-setup.data';
 import { records as LeaveStudentLeaveData } from '../pages/leave/student-leave/student-leave.data';
@@ -63,9 +60,6 @@ import { records as HardwareBulkEnrollmentData } from '../pages/hardware/bulk-en
 import { records as HardwareBackupRestoreData } from '../pages/hardware/backup-restore/backup-restore.data';
 import { defaults as HardwareSetupData } from '../pages/hardware/setup/setup.data';
 import { sources as HardwareReportsData } from '../pages/hardware/reports/reports.data';
-import { records as SettingsBranchesData } from '../pages/settings/branches/branches.data';
-import { records as SettingsDepartmentsData } from '../pages/settings/departments/departments.data';
-import { records as SettingsDesignationsData } from '../pages/settings/designations/designations.data';
 import { records as SettingsFeaturesData } from '../pages/settings/features/features.data';
 import { records as SettingsUsersRightsData } from '../pages/settings/users-rights/users-rights.data';
 import { records as SettingsApprovalsData } from '../pages/settings/approvals/approvals.data';
@@ -87,7 +81,6 @@ export const screens: Record<string, Record<string, Screen>> = {
     "Attendance Regularization": AttendanceAttendanceRegularizationData,
     "Shift Management": AttendanceShiftManagementData,
     "Roster Management": AttendanceRosterManagementData,
-    "Attendance Code": AttendanceAttendanceCodeData
   },
   "Leave": {
     "Holiday Setup": LeaveHolidaySetupData,
@@ -141,9 +134,6 @@ export const screens: Record<string, Record<string, Screen>> = {
     "Backup & Restore": HardwareBackupRestoreData
   },
   "Settings": {
-    "Branches": SettingsBranchesData,
-    "Departments": SettingsDepartmentsData,
-    "Designations": SettingsDesignationsData,
     "Features": SettingsFeaturesData,
     "Users & Rights": SettingsUsersRightsData,
     "Approvals": SettingsApprovalsData,
@@ -154,8 +144,6 @@ export const screens: Record<string, Record<string, Screen>> = {
   }
 };
 export const setupValues: Record<string, Record<string,string>> = {
-  "User Directory": UserDirectorySetupData,
-  "Attendance": AttendanceSetupData,
   "Leave": LeaveSetupData,
   "Hostel": HostelSetupData,
   "Night Out": NightOutSetupData,

@@ -1,12 +1,42 @@
+@if(loading()){<p role="status">Loading setup…</p>}
+@if(error()){<p role="alert">{{error()}}</p>}
+@if(!loading() && !setup()){<button class="btn btn-primary" (click)="load()">Retry</button>}
+@if(setup(); as values){
 <nav class="catalog-tabs" aria-label="Directory setup categories">
-@for(t of tabs;track t.title){<button type="button" [attr.aria-pressed]="tab===t" (click)="select(t)"><i class="fa-solid fa-{{t.icon}}"></i>{{t.title}} <b>{{t.names.length}}</b></button>}
+@for(t of tabs;track t.title){<button type="button" [attr.aria-pressed]="tab===t" (click)="select(t)"><i class="fa-solid fa-{{t.icon}}"></i>{{t.title}} <b>{{total(t)}}</b></button>}
 </nav>
-<header class="catalog-heading"><div><h2>{{tab.title}}</h2><p>{{tab.description}}</p></div>
+<header class="catalog-heading"><div><h2>{{tab.title}}</h2></div>
 @if(tab.academic && !academicEditor){<a [href]="'#/attendance/setup/'+(tab===tabs[0]?'programmes':'classes-sections')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Manage in Attendance → Setup</a>}</header>
 <div class="catalog-toolbar"><div class="statuses" role="group" aria-label="Status">@for(s of statuses;track s){<button type="button" [attr.aria-pressed]="status===s" (click)="status=s">{{s}} <b>{{count(s)}}</b></button>}</div>
 <label class="catalog-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" [attr.aria-label]="'Search '+tab.title" [placeholder]="'Search '+tab.title.toLowerCase()+'…'" [(ngModel)]="query"></label></div>
 <div class="catalog-table"><table><thead><tr><th>Code</th><th>{{tab.column}}</th><th>Status</th><th aria-label="Actions"></th></tr></thead>
-<tbody>@for(e of rows;track e.id){<tr><td class="code">—</td><td><strong>{{e.name}}</strong> <span class="standard">Standard</span></td><td><span class="state" [class.inactive]="!e.active">{{e.active?'Active':'Inactive'}}</span></td><td>
-@if(editable){<button class="edit-status" (click)="toggle(e)" [attr.aria-label]="(e.active?'Deactivate ':'Activate ')+e.name">{{e.active?'Deactivate':'Activate'}}</button>}@else{<i class="fa-solid fa-lock" title="Managed in Attendance Setup" aria-label="Read-only"></i>}</td></tr>}
+<tbody>@for(e of rows;track e.key){<tr><td class="code">—</td><td><strong>{{e.name}}</strong> <span class="standard">Standard</span></td><td><span class="state" [class.inactive]="!e.active">{{e.active?'Active':'Inactive'}}</span></td><td>
+@if(editable){<button class="edit-status" [disabled]="busy()" (click)="toggle(e)" [attr.aria-label]="(e.active?'Deactivate ':'Activate ')+e.name">{{e.active?'Deactivate':'Activate'}}</button>}@else{<i class="fa-solid fa-lock" title="Read-only" aria-label="Read-only"></i>}</td></tr>}
 @empty{<tr><td colspan="4" class="empty">No matching records.</td></tr>}</tbody></table></div>
-@if(!academicEditor){<details class="preferences"><summary>Directory preferences</summary><campus-module-screen moduleName="User Directory" section="Setup" icon="fa-solid fa-address-book"></campus-module-screen></details>}
+@if(academicEditor){
+  <section class="gst-card mt-3">
+    <h2 class="gst-card-title">Attendance settings</h2>
+    <form #attendance="ngForm" (ngSubmit)="attendance.valid && save()" (input)="message.set('')">
+      <fieldset class="setup-fields" [disabled]="!admin || busy()">
+        <label>Working day starts<input class="form-control" type="time" name="start" required [(ngModel)]="values.attendance.workingDayStart"></label>
+        <label>Working day ends<input class="form-control" type="time" name="end" required [(ngModel)]="values.attendance.workingDayEnd"></label>
+        <label>Grace period (minutes)<input class="form-control" type="number" required min="0" step="1" name="grace" [(ngModel)]="values.attendance.graceMinutes"></label>
+      </fieldset>
+      @if(admin){<button class="btn btn-primary" [disabled]="busy() || attendance.invalid">Save changes</button>}
+    </form>
+  </section>
+}@else{
+  <details class="preferences"><summary>Directory preferences</summary>
+    <form class="gst-card" #directory="ngForm" (ngSubmit)="directory.valid && save()" (input)="message.set('')">
+      <fieldset class="setup-fields" [disabled]="!admin || busy()">
+        <label>Default view<select class="form-select" name="view" [(ngModel)]="values.directory.defaultView"><option>Grid</option><option>List</option></select></label>
+        <label>Student ID prefix<input class="form-control" required maxlength="16" name="student" [(ngModel)]="values.directory.studentIdPrefix"></label>
+        <label>Faculty ID prefix<input class="form-control" required maxlength="16" name="faculty" [(ngModel)]="values.directory.facultyIdPrefix"></label>
+        <label>Employee ID prefix<input class="form-control" required maxlength="16" name="employee" [(ngModel)]="values.directory.employeeIdPrefix"></label>
+      </fieldset>
+      @if(admin){<button class="btn btn-primary" [disabled]="busy() || directory.invalid">Save changes</button>}
+    </form>
+  </details>
+}
+@if(message()){<p role="status">{{message()}}</p>}
+}

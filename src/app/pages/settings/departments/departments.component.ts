@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ModuleScreen } from '../../../shared/module-screen/module-screen.component';
+import { OrganizationPage } from '../organization/organization.component';
 
 @Component({
   selector: 'campus-settings-departments',
-  imports: [ModuleScreen],
+  imports: [OrganizationPage],
   templateUrl: './departments.component.html'
 })
 export class SettingsDepartmentsPage {}
